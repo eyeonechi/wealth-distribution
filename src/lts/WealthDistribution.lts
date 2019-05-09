@@ -1,0 +1,14 @@
+TURTLE= LIVE,
+LIVE = ( harvest -> LIVE
+       | eat -> LIVE
+       | no_food -> DEATH),
+DEATH = (dead -> TURTLE).
+
+PATCH = EMPTY,
+EMPTY = (grow -> GROWING),
+GROWING = ( grow -> GROWING
+          | grow -> FULL
+          | harvest -> EMPTY),
+FULL = (harvest -> EMPTY).
+
+||WORLD = ({a,b}:TURTLE || {c,d}:PATCH)/{{a,b}.harvest/{c,d}.harvest}.

@@ -3,15 +3,15 @@ import java.util.Random;
 
 public class WealthDistribution {
 
-  public static final Integer NUM_PATCH_ROWS = 10;
-  public static final Integer NUM_PATCH_COLS = 10;
+  public static final Integer NUM_PATCH_ROWS = 20;
+  public static final Integer NUM_PATCH_COLS = 20;
   public static final Integer MAX_TICKS = 500;
 
   public static final Integer MAX_GRAIN = 50;
   // public static final Double GINI_INDEX_RESERVE;
   // public static final Double LORENZ_POINTS;
 
-  public static final Integer NUM_PEOPLE = 16; // 250;
+  public static final Integer NUM_PEOPLE = 20; // 250;
   public static final Integer PERCENT_BEST_LAND = 10;
   public static final Integer GRAIN_GROWTH_INTERVAL = 1;
 
@@ -198,6 +198,12 @@ public class WealthDistribution {
       System.out.print("\n");
     }
     System.out.print("\n");
+  }
+
+  public static void main(String[] args) {
+    WealthDistribution model = new WealthDistribution();
+    model.setup();
+    model.go();
   }
 
 }
