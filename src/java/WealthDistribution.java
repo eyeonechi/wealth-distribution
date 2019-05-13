@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Random;
 
 public class WealthDistribution {
@@ -17,14 +16,8 @@ public class WealthDistribution {
 
   private Patch[][] patches;
   private Turtle[] turtles;
+  private Calculator calculator;
   private Integer ticks;
-
-  private Integer[] sortedWealths;
-  private Integer totalWealth;
-  private Integer wealthSumSoFar;
-  private Integer index;
-  private Integer giniIndexReserve;
-  private Integer[] lorenzPoints;
 
   public WealthDistribution() {}
 
@@ -35,7 +28,8 @@ public class WealthDistribution {
     // call other procedures to setup various parts of the world
     setupPatches();
     setupTurtles();
-    updateLorenzAndGini();
+    calculator = new Calculator(turtles, patches);
+    calculator.updateLorenzAndGini();
     resetTicks();
   }
 
@@ -114,7 +108,7 @@ public class WealthDistribution {
     for (int i = 0; i < turtles.length; i ++) {
       turtles[i] = new Turtle(0, 0, 0, 0, 0, patches);
       // put turtles on patch centers
-      turtles[i].moveTo(new Random().nextInt(NUM_PATCH_COLS), new Random().nextInt(NUM_PATCH_ROWS));
+      turtles[i].fd(new Random().nextInt(NUM_PATCH_COLS), new Random().nextInt(NUM_PATCH_ROWS));
       // easier to see
       // TODO: dont know what this is
       // turtles[i].setSize(1.5)
@@ -123,32 +117,6 @@ public class WealthDistribution {
     }
     for (int i = 0; i < turtles.length; i ++) {
       turtles[i].recolorTurtles();
-    }
-  }
-
-  private void updateLorenzAndGini() {
-    sortedWealths = new Integer[turtles.length];
-    for (int i = 0; i < turtles.length; i ++) {
-      sortedWealths[i] = turtles[i].getWealth();
-    }
-    Arrays.sort(sortedWealths);
-    totalWealth = 0;
-    for (int i = 0; i < sortedWealths.length; i ++) {
-      totalWealth += sortedWealths[i];
-    }
-    wealthSumSoFar = 0;
-    index = 0;
-    giniIndexReserve = 0;
-    // TODO: confirm this
-    lorenzPoints = new Integer[MAX_TICKS];
-    // now actually plot the Lorenz curve
-    // along the way, we also calculate the Gini index
-    for (int i = 0; i < NUM_PEOPLE; i ++) {
-      // TODO: verify these
-      wealthSumSoFar += sortedWealths[i];
-      lorenzPoints[i] = (wealthSumSoFar / totalWealth) * 100;
-      index += 1;
-      giniIndexReserve += (index / NUM_PEOPLE) - (wealthSumSoFar / totalWealth);
     }
   }
 
@@ -174,7 +142,7 @@ public class WealthDistribution {
           }
         }
       }
-      updateLorenzAndGini();
+      calculator.updateLorenzAndGini();
       // print output
       visualiseModel();
     }

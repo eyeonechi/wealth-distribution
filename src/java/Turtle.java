@@ -99,8 +99,7 @@ public class Turtle {
   }
 
   public void moveEatAgeDie() {
-    // TODO: what is this?
-    // fd 1
+    fd(x, y);
     // consume some grain according to metabolism
     wealth -= metabolism;
     // grow older
@@ -112,6 +111,10 @@ public class Turtle {
     if (wealth < 0 || age >= lifeExpectancy) {
       setInitialTurtleVars();
     }
+  }
+
+  private void fd(Integer steps) {
+
   }
 
   public Integer grainAhead() {
@@ -141,12 +144,11 @@ public class Turtle {
       }
       howFar = howFar + 1;
     }
-    // TODO: should this be here?
-    moveTo(x, y);
     return total;
   }
 
-  public void moveTo(Integer x, Integer y) {
+  // move to
+  public void fd(Integer x, Integer y) {
     if (patch != null) {
       patch.decreaseCountTurtlesHere();
     }
