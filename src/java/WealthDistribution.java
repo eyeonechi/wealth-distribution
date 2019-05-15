@@ -57,20 +57,45 @@ public class WealthDistribution {
     // spread that grain around the window a little and put a little back
     // into the patches that are the "best land" found above
     // TODO: confirm how diffuse function works
-    /*
     for (int i = 0; i < 5; i ++) {
       for (int y = 0; y < patches.length; y ++) {
         for (int x = 0; x < patches[y].length; x ++) {
           if (patches[y][x].getGrainHere() != 0) {
-            patches[y][x].setGrainHere(Double.valueOf(MAX_GRAIN));
-            if (y > 0)
-              patches[y - 1][x].diffuseGrainHere(patches[y][x].getGrainHere() * 0.25);
-            if (y < NUM_PATCH_ROWS - 1)
-              patches[y + 1][x].diffuseGrainHere(patches[y][x].getGrainHere() * 0.25);
-            if (x > 0)
-              patches[y][x - 1].diffuseGrainHere(patches[y][x].getGrainHere() * 0.25);
-            if (x < NUM_PATCH_COLS - 1)
-              patches[y][x + 1].diffuseGrainHere(patches[y][x].getGrainHere() * 0.25);
+            patches[y][x].setGrainHere(Double.valueOf(patches[y][x].getMaxGrainHere()));
+          }
+          // Diffuse
+          Double grainShare = patches[y][x].getGrainHere() * 0.25 / 8;
+          if (y > 0 && x > 0) {
+            patches[y - 1][x - 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (y > 0) {
+            patches[y - 1][x].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (y > 0 && x < NUM_PATCH_COLS - 1) {
+            patches[y - 1][x + 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (x > 0) {
+            patches[y][x - 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (x < NUM_PATCH_COLS - 1) {
+            patches[y][x + 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (y < NUM_PATCH_ROWS - 1 && x > 0) {
+            patches[y + 1][x - 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (y < NUM_PATCH_ROWS - 1) {
+            patches[y + 1][x].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (y < NUM_PATCH_ROWS - 1 && x < NUM_PATCH_COLS - 1) {
+            patches[y + 1][x + 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
           }
         }
       }
@@ -79,15 +104,39 @@ public class WealthDistribution {
     for (int i = 0; i < 10; i ++) {
       for (int y = 0; y < patches.length; y ++) {
         for (int x = 0; x < patches[y].length; x ++) {
-          if (patches[y][x].getGrainHere() != 0) {
-            if (y > 0)
-              patches[y - 1][x].diffuseGrainHere(patches[y][x].getGrainHere() * 0.25);
-            if (y < NUM_PATCH_ROWS - 1)
-              patches[y + 1][x].diffuseGrainHere(patches[y][x].getGrainHere() * 0.25);
-            if (x > 0)
-              patches[y][x - 1].diffuseGrainHere(patches[y][x].getGrainHere() * 0.25);
-            if (x < NUM_PATCH_COLS - 1)
-              patches[y][x + 1].diffuseGrainHere(patches[y][x].getGrainHere() * 0.25);
+          // Diffuse
+          Double grainShare = patches[y][x].getGrainHere() * 0.25 / 8;
+          if (y > 0 && x > 0) {
+            patches[y - 1][x - 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (y > 0) {
+            patches[y - 1][x].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (y > 0 && x < NUM_PATCH_COLS - 1) {
+            patches[y - 1][x + 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (x > 0) {
+            patches[y][x - 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (x < NUM_PATCH_COLS - 1) {
+            patches[y][x + 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (y < NUM_PATCH_ROWS - 1 && x > 0) {
+            patches[y + 1][x - 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (y < NUM_PATCH_ROWS - 1) {
+            patches[y + 1][x].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+          }
+          if (y < NUM_PATCH_ROWS - 1 && x < NUM_PATCH_COLS - 1) {
+            patches[y + 1][x + 1].diffuseGrainHere(grainShare);
+            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
           }
         }
       }
@@ -101,7 +150,6 @@ public class WealthDistribution {
         patches[y][x].recolorPatch();
       }
     }
-    */
   }
 
   // setup the initial values for the turtle variables

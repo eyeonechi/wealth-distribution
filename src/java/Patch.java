@@ -40,6 +40,10 @@ public class Patch {
     return grainHere;
   }
 
+  public Integer getMaxGrainHere() {
+    return maxGrainHere;
+  }
+
   public Integer getCountTurtlesHere() {
     return countTurtlesHere;
   }
