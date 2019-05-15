@@ -158,9 +158,9 @@ public class WealthDistribution {
     // TODO: what is this?
     // setDefaultShape(turtles, "person")
     for (int i = 0; i < turtles.length; i ++) {
-      turtles[i] = new Turtle(0, 0, 0, 0, 0);
+      turtles[i] = new Turtle(0, 0, 0, 0, 0, new Random().nextInt(NUM_PATCH_COLS), new Random().nextInt(NUM_PATCH_ROWS));
       // put turtles on patch centers
-      turtles[i].fd(new Random().nextInt(NUM_PATCH_COLS), new Random().nextInt(NUM_PATCH_ROWS), patches);
+      turtles[i].fd(patches, 0);
       // easier to see
       // TODO: dont know what this is
       // turtles[i].setSize(1.5)
@@ -210,10 +210,10 @@ public class WealthDistribution {
         if (patches[y][x].getCountTurtlesHere() > 0) {
           System.out.printf("%2d", patches[y][x].getCountTurtlesHere());
         } else {
-          if (patches[y][x].getGrainHere() == 0) {
-            System.out.printf("__");
-          } else {
+          if (patches[y][x].getGrainHere() > 0) {
             System.out.printf("..");
+          } else {
+            System.out.printf("__");
           }
         }
       }
