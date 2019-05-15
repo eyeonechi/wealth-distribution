@@ -156,9 +156,9 @@ public class WealthDistribution {
     // TODO: what is this?
     // setDefaultShape(turtles, "person")
     for (int i = 0; i < turtles.length; i ++) {
-      turtles[i] = new Turtle(0, 0, 0, 0, 0, patches);
+      turtles[i] = new Turtle(0, 0, 0, 0, 0);
       // put turtles on patch centers
-      turtles[i].fd(new Random().nextInt(NUM_PATCH_COLS), new Random().nextInt(NUM_PATCH_ROWS));
+      turtles[i].fd(new Random().nextInt(NUM_PATCH_COLS), new Random().nextInt(NUM_PATCH_ROWS), patches);
       // easier to see
       // TODO: dont know what this is
       // turtles[i].setSize(1.5)
@@ -179,9 +179,9 @@ public class WealthDistribution {
     for (ticks = 0; ticks < MAX_TICKS + 1; ticks ++) {
       for (int i = 0; i < turtles.length; i ++) {
         // choose direction holding most grain within the turtle's vision
-        turtles[i].turnTowardsGrain();
-        turtles[i].harvest();
-        turtles[i].moveEatAgeDie();
+        turtles[i].turnTowardsGrain(patches);
+        turtles[i].harvest(patches);
+        turtles[i].moveEatAgeDie(patches);
         turtles[i].recolorTurtles();
       }
       // grow grain every GRAIN_GROWTH_INTERVAL clock ticks
