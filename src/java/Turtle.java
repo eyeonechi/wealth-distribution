@@ -16,7 +16,6 @@ public class Turtle {
 
   private Integer x;
   private Integer y;
-  private Patch patch;
   private Integer maxWealth;
   private String color;
   private Integer heading;
@@ -25,12 +24,15 @@ public class Turtle {
   private Integer total;
   private Integer howFar;
 
-  public Turtle(Integer age, Integer wealth, Integer lifeExpectancy, Integer metabolism, Integer vision) {
+  public Turtle(Integer age, Integer wealth, Integer lifeExpectancy, Integer metabolism, Integer vision, Integer x, Integer y) {
     this.age = age;
     this.wealth = wealth;
     this.lifeExpectancy = lifeExpectancy;
     this.metabolism = metabolism;
     this.vision = vision;
+    this.x = x;
+    this.y = y;
+    this.heading = 0;
   }
 
   public void setInitialTurtleVars() {
@@ -40,9 +42,6 @@ public class Turtle {
     metabolism = 1 + new Random().nextInt(METABOLISM_MAX);
     wealth = metabolism + new Random().nextInt(50);
     vision = 1 + new Random().nextInt(MAX_VISION);
-    // set random location
-    x = new Random().nextInt(WealthDistribution.NUM_PATCH_COLS);
-    y = new Random().nextInt(WealthDistribution.NUM_PATCH_ROWS);
   }
 
   // set the class of the turtles
@@ -89,15 +88,15 @@ public class Turtle {
   // turtles on a patch, divide the grain evenly among the turtles
   public void harvest(Patch[][] patches) {
     // have turtles harvest before any turtle sets the patch to 0
-    wealth = (int) Math.round(Math.floor(wealth + (patch.getGrainHere() / patch.getCountTurtlesHere())));
+    wealth = (int) Math.round(Math.floor(wealth + (patches[y][x].getGrainHere() / patches[y][x].getCountTurtlesHere())));
     // now that the grain has been harvested, have the turtles make the
     // patches which they are on have no grain
-    patch.setGrainHere(0.0);
-    patch.recolorPatch();
+    patches[y][x].setGrainHere(0.0);
+    patches[y][x].recolorPatch();
   }
 
   public void moveEatAgeDie(Patch[][] patches) {
-    fd(x, y, patches);
+    fd(patches, 1);
     // consume some grain according to metabolism
     wealth -= metabolism;
     // grow older
@@ -118,22 +117,18 @@ public class Turtle {
       if (heading == 0) {
         if ((x + i) < (WealthDistribution.NUM_PATCH_COLS - 1)) {
           total += patches[y][x + i].getGrainHere();
-          x += 1;
         }
       } else if (heading == 90) {
         if ((y - i) > 0) {
           total += patches[y - i][x].getGrainHere();
-          y -= 1;
         }
       } else if (heading == 180) {
         if ((x - i) > 0) {
           total += patches[y][x - i].getGrainHere();
-          x -= 1;
         }
       } else {
         if ((y + i) < (WealthDistribution.NUM_PATCH_ROWS - 1)) {
           total += patches[y + i][x].getGrainHere();
-          y += 1;
         }
       }
       howFar = howFar + 1;
@@ -142,12 +137,30 @@ public class Turtle {
   }
 
   // move to
-  public void fd(Integer x, Integer y, Patch[][] patches) {
-    if (patch != null) {
-      patch.decreaseCountTurtlesHere();
+  public void fd(Patch[][] patches, Integer steps) {
+    if (steps != 0) {
+      patches[y][x].decreaseCountTurtlesHere();
+      if (heading == 0) {
+        x += steps;
+      } else if (heading == 90) {
+        y -= steps;
+      } else if (heading == 180) {
+        x -= steps;
+      } else {
+        y += steps;
+      }
+      if (x < 0) {
+        x = WealthDistribution.NUM_PATCH_COLS - 1;
+      } else if (x > WealthDistribution.NUM_PATCH_COLS - 1) {
+        x = 0;
+      }
+      if (y < 0) {
+        y = WealthDistribution.NUM_PATCH_ROWS - 1;
+      } else if (y > WealthDistribution.NUM_PATCH_ROWS - 1) {
+        y = 0;
+      }
     }
-    patch = patches[y][x];
-    patch.increaseCountTurtlesHere();
+    patches[y][x].increaseCountTurtlesHere();
   }
 
   public void setAge() {
@@ -156,6 +169,14 @@ public class Turtle {
 
   public Integer getWealth() {
     return wealth;
+  }
+
+  public Integer getX() {
+    return x;
+  }
+
+  public Integer getY() {
+    return y;
   }
 
 }
