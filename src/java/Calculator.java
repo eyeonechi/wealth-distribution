@@ -2,8 +2,6 @@ import java.util.Arrays;
 
 public class Calculator {
 
-  private Patch[][] patches;
-  private Turtle[] turtles;
   private Integer[] sortedWealths;
   private Integer totalWealth;
   private Integer wealthSumSoFar;
@@ -11,12 +9,10 @@ public class Calculator {
   private Integer giniIndexReserve;
   private Integer[] lorenzPoints;
 
-  public Calculator(Turtle[] turtles, Patch[][] patches) {
-    this.turtles = turtles;
-    this.patches = patches;
+  public Calculator() {
   }
 
-  public void updateLorenzAndGini() {
+  public void updateLorenzAndGini(Turtle[] turtles, Patch[][] patches) {
     sortedWealths = new Integer[turtles.length];
     for (int i = 0; i < turtles.length; i ++) {
       sortedWealths[i] = turtles[i].getWealth();

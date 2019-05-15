@@ -28,8 +28,8 @@ public class WealthDistribution {
     // call other procedures to setup various parts of the world
     setupPatches();
     setupTurtles();
-    calculator = new Calculator(turtles, patches);
-    calculator.updateLorenzAndGini();
+    calculator = new Calculator();
+    calculator.updateLorenzAndGini(turtles, patches);
     resetTicks();
   }
 
@@ -142,7 +142,7 @@ public class WealthDistribution {
           }
         }
       }
-      calculator.updateLorenzAndGini();
+      calculator.updateLorenzAndGini(turtles, patches);
       // print output
       visualiseModel();
     }
