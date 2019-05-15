@@ -16,7 +16,6 @@ public class Turtle {
 
   private Integer x;
   private Integer y;
-  private Patch[][] patches;
   private Patch patch;
   private Integer maxWealth;
   private String color;
@@ -26,13 +25,12 @@ public class Turtle {
   private Integer total;
   private Integer howFar;
 
-  public Turtle(Integer age, Integer wealth, Integer lifeExpectancy, Integer metabolism, Integer vision, Patch[][] patches) {
+  public Turtle(Integer age, Integer wealth, Integer lifeExpectancy, Integer metabolism, Integer vision) {
     this.age = age;
     this.wealth = wealth;
     this.lifeExpectancy = lifeExpectancy;
     this.metabolism = metabolism;
     this.vision = vision;
-    this.patches = patches;
   }
 
   public void setInitialTurtleVars() {
@@ -65,31 +63,31 @@ public class Turtle {
 
   // determine the direction which is most profitable for each turtle in
   // the surrounding patches within the turtles' vision
-  public void turnTowardsGrain() {
+  public void turnTowardsGrain(Patch[][] patches) {
     heading = 0;
     bestDirection = 0;
-    bestAmount = grainAhead();
+    bestAmount = grainAhead(patches);
     heading = 90;
-    if (grainAhead() > bestAmount) {
+    if (grainAhead(patches) > bestAmount) {
       bestDirection = 90;
-      bestAmount = grainAhead();
+      bestAmount = grainAhead(patches);
     }
     heading = 180;
-    if (grainAhead() > bestAmount) {
+    if (grainAhead(patches) > bestAmount) {
       bestDirection = 180;
-      bestAmount = grainAhead();
+      bestAmount = grainAhead(patches);
     }
     heading = 270;
-    if (grainAhead() > bestAmount) {
+    if (grainAhead(patches) > bestAmount) {
       bestDirection = 270;
-      bestAmount = grainAhead();
+      bestAmount = grainAhead(patches);
     }
     heading = bestDirection;
   }
 
   // each turtle harvests the grain on its patch. if there are multiple
   // turtles on a patch, divide the grain evenly among the turtles
-  public void harvest() {
+  public void harvest(Patch[][] patches) {
     // have turtles harvest before any turtle sets the patch to 0
     wealth = (int) Math.round(Math.floor(wealth + (patch.getGrainHere() / patch.getCountTurtlesHere())));
     // now that the grain has been harvested, have the turtles make the
@@ -98,8 +96,8 @@ public class Turtle {
     patch.recolorPatch();
   }
 
-  public void moveEatAgeDie() {
-    fd(x, y);
+  public void moveEatAgeDie(Patch[][] patches) {
+    fd(x, y, patches);
     // consume some grain according to metabolism
     wealth -= metabolism;
     // grow older
@@ -113,11 +111,7 @@ public class Turtle {
     }
   }
 
-  private void fd(Integer steps) {
-
-  }
-
-  public Integer grainAhead() {
+  public Integer grainAhead(Patch[][] patches) {
     total = 0;
     howFar = 1;
     for (int i = 0; i < vision; i ++) {
@@ -148,7 +142,7 @@ public class Turtle {
   }
 
   // move to
-  public void fd(Integer x, Integer y) {
+  public void fd(Integer x, Integer y, Patch[][] patches) {
     if (patch != null) {
       patch.decreaseCountTurtlesHere();
     }
