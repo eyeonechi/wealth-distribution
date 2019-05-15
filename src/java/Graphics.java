@@ -6,17 +6,24 @@ public class Graphics extends JFrame {
   private JFrame f;
   private JPanel grid;
   private JLabel[][] labels;
+  private ImageIcon turtle;
+  private ImageIcon emptyPatch;
+  private ImageIcon grainPatch;
 
   public Graphics(Turtle[] turtles, Patch[][] patches) {
     // JButton b = new JButton("click");
     // b.setBounds(130, 100, 100, 40); // x, y, width, height
+
+    turtle = new ImageIcon("saksham.jpg");
+    emptyPatch = new ImageIcon("emptyPatch.jpg");
+    grainPatch = new ImageIcon("grainPatch.jpg");
 
     labels = new JLabel[WealthDistribution.NUM_PATCH_ROWS][WealthDistribution.NUM_PATCH_COLS];
     grid = new JPanel();
     grid.setLayout(new GridLayout(WealthDistribution.NUM_PATCH_COLS, WealthDistribution.NUM_PATCH_ROWS));
     for (int y = 0; y < patches.length; y ++) {
       for (int x = 0; x < patches[y].length; x ++) {
-        JLabel label = new JLabel("__");
+        JLabel label = new JLabel(emptyPatch);
         grid.add(label);
         labels[y][x] = label;
       }
@@ -36,12 +43,15 @@ public class Graphics extends JFrame {
     for (int y = 0; y < patches.length; y ++) {
       for (int x = 0; x < patches[y].length; x ++) {
         if (patches[y][x].getCountTurtlesHere() > 0) {
-          labels[y][x].setText(String.format("%2d", patches[y][x].getCountTurtlesHere()));
+          labels[y][x].setIcon(turtle);
+          // labels[y][x].setText(String.format("%2d", patches[y][x].getCountTurtlesHere()));
         } else {
           if (patches[y][x].getGrainHere() == 0) {
-            labels[y][x].setText("__");
+            labels[y][x].setIcon(emptyPatch);
+            // labels[y][x].setText("__");
           } else {
-            labels[y][x].setText("..");
+            labels[y][x].setIcon(grainPatch);
+            // labels[y][x].setText("..");
           }
         }
       }
