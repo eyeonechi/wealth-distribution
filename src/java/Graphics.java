@@ -48,10 +48,10 @@ public class Graphics extends JFrame {
         } else {
           if (patches[y][x].getGrainHere() == 0) {
             labels[y][x].setIcon(emptyPatch);
-            // labels[y][x].setText("__");
+            // labels[y][x].setText(String.format("%2d", patches[y][x].getGrainHere()));
           } else {
             labels[y][x].setIcon(grainPatch);
-            // labels[y][x].setText("..");
+            // labels[y][x].setText(String.format("%2d", patches[y][x].getGrainHere()));
           }
         }
       }

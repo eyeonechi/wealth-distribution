@@ -12,7 +12,7 @@ public class WealthDistribution {
 
   public static final Integer NUM_PEOPLE = 20; // 250;
   public static final Integer PERCENT_BEST_LAND = 10;
-  public static final Integer GRAIN_GROWTH_INTERVAL = 1;
+  public static final Integer GRAIN_GROWTH_INTERVAL = 5;
 
   private Patch[][] patches;
   private Turtle[] turtles;
