@@ -37,7 +37,7 @@ public class Turtle {
 
   public void setInitialTurtleVars() {
     age = 0;
-    // TODO: face one-of neighbors4
+    // face one-of neighbors4
     lifeExpectancy = LIFE_EXPECTANCY_MIN + new Random().nextInt(LIFE_EXPECTANCY_MAX - LIFE_EXPECTANCY_MIN + 1);
     metabolism = 1 + new Random().nextInt(METABOLISM_MAX);
     wealth = metabolism + new Random().nextInt(50);
@@ -48,8 +48,7 @@ public class Turtle {
   // if a turtle has less than a third the wealth of the richest turtle, color it red.
   // if between one and two thirds, color it green.
   // if over two thirds, color it blue.
-  public void recolorTurtles() {
-    // TODO: let max-wealth max [wealth] of turtles
+  public void recolorTurtles(Integer maxWealth) {
     maxWealth = 0;
     if (wealth <= maxWealth / 3.0) {
       color = "red";

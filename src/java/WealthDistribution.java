@@ -18,12 +18,14 @@ public class WealthDistribution {
   private Turtle[] turtles;
   private Calculator calculator;
   private Integer ticks;
+  private Integer maxWealth;
   private static Graphics graphics;
 
   public WealthDistribution() {}
 
   // setup and helpers
   public void setup() {
+    maxWealth = 0;
     clearAll();
     // set global variables to appropriate values
     // call other procedures to setup various parts of the world
@@ -35,9 +37,7 @@ public class WealthDistribution {
     graphics.update(turtles, patches);
   }
 
-  private void clearAll() {
-    // TODO: is this used?
-  }
+  private void clearAll() {}
 
   // setup the initial amounts of grain each patch has
   private void setupPatches() {
@@ -154,20 +154,23 @@ public class WealthDistribution {
   // setup the initial values for the turtle variables
   private void setupTurtles() {
     turtles = new Turtle[NUM_PEOPLE];
-    // TODO: what is this?
     // setDefaultShape(turtles, "person")
     for (int i = 0; i < turtles.length; i ++) {
       turtles[i] = new Turtle(0, 0, 0, 0, 0, new Random().nextInt(NUM_PATCH_COLS), new Random().nextInt(NUM_PATCH_ROWS));
       // put turtles on patch centers
       turtles[i].fd(patches, 0);
       // easier to see
-      // TODO: dont know what this is
       // turtles[i].setSize(1.5)
       turtles[i].setInitialTurtleVars();
       turtles[i].setAge();
     }
     for (int i = 0; i < turtles.length; i ++) {
-      turtles[i].recolorTurtles();
+      if (turtles[i].getWealth() > maxWealth) {
+        maxWealth = turtles[i].getWealth();
+      }
+    }
+    for (int i = 0; i < turtles.length; i ++) {
+      turtles[i].recolorTurtles(maxWealth);
     }
   }
 
@@ -177,13 +180,18 @@ public class WealthDistribution {
 
   // go and helpers
   public void go() {
+    for (int i = 0; i < turtles.length; i ++) {
+      if (turtles[i].getWealth() > maxWealth) {
+        maxWealth = turtles[i].getWealth();
+      }
+    }
     for (ticks = 0; ticks < MAX_TICKS + 1; ticks ++) {
       for (int i = 0; i < turtles.length; i ++) {
         // choose direction holding most grain within the turtle's vision
         turtles[i].turnTowardsGrain(patches);
         turtles[i].harvest(patches);
         turtles[i].moveEatAgeDie(patches);
-        turtles[i].recolorTurtles();
+        turtles[i].recolorTurtles(maxWealth);
       }
       // grow grain every GRAIN_GROWTH_INTERVAL clock ticks
       if (ticks % GRAIN_GROWTH_INTERVAL == 0) {
@@ -231,6 +239,10 @@ public class WealthDistribution {
 
   public Calculator getCalculator() {
     return calculator;
+  }
+
+  public Integer getTicks() {
+    return ticks;
   }
 
   public static void main(String[] args) {
