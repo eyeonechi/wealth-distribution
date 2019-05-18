@@ -1,45 +1,78 @@
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Graphics extends JFrame {
 
+  private WealthDistribution model;
   private JFrame f;
-  private JPanel grid;
+  private JPanel panel;
   private JLabel[][] labels;
   private ImageIcon turtleRed;
   private ImageIcon turtleBlue;
   private ImageIcon turtleGreen;
   private Color[] colorBands;
 
-  public Graphics(Turtle[] turtles, Patch[][] patches) {
-    colorBands = getColorBands(WealthDistribution.MAX_GRAIN);
-    // JButton b = new JButton("click");
-    // b.setBounds(130, 100, 100, 40); // x, y, width, height
+  private Graph lorenzCurveGraph;
+  private Graph giniIndexReserveGraph;
 
-    turtleRed = new ImageIcon("sakshamRed.jpg");
-    turtleBlue = new ImageIcon("sakshamBlue.jpg");
-    turtleGreen = new ImageIcon("sakshamGreen.jpg");
+  public Graphics(WealthDistribution model) {
+    this.model = model;
+
+    colorBands = getColorBands(WealthDistribution.MAX_GRAIN);
+    turtleRed = new ImageIcon("turtleRed.jpg");
+    turtleBlue = new ImageIcon("turtleBlue.jpg");
+    turtleGreen = new ImageIcon("turtleGreen.jpg");
+
+    JButton setupButton = new JButton("setup");
+    setupButton.setBounds(0, 0, 100, 40); // x, y, width, height
+    setupButton.setBackground(Color.white);
+    setupButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        model.setup();
+      }
+    });
+
+    JButton goButton = new JButton("go");
+    goButton.setBounds(100, 0, 100, 40); // x, y, width, height
+    goButton.setBackground(Color.white);
+    goButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        model.go();
+      }
+    });
 
     labels = new JLabel[WealthDistribution.NUM_PATCH_ROWS][WealthDistribution.NUM_PATCH_COLS];
-    grid = new JPanel();
-    grid.setLayout(new GridLayout(WealthDistribution.NUM_PATCH_COLS, WealthDistribution.NUM_PATCH_ROWS));
-    for (int y = 0; y < patches.length; y ++) {
-      for (int x = 0; x < patches[y].length; x ++) {
+    panel = new JPanel();
+    panel.setBounds(480, 360, 0, 40); // x, y, width, height
+    panel.setLayout(new GridLayout(WealthDistribution.NUM_PATCH_COLS, WealthDistribution.NUM_PATCH_ROWS));
+    for (int y = 0; y < WealthDistribution.NUM_PATCH_ROWS; y ++) {
+      for (int x = 0; x < WealthDistribution.NUM_PATCH_COLS; x ++) {
         JLabel label = new JLabel();
         label.setOpaque(true);
-        grid.add(label);
         labels[y][x] = label;
+        panel.add(label);
       }
     }
 
-    // f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    lorenzCurveGraph = new Graph(true);
+    lorenzCurveGraph.setPreferredSize(new Dimension(240, 160));
+    giniIndexReserveGraph = new Graph(false);
+    giniIndexReserveGraph.setPreferredSize(new Dimension(240, 160));
 
-    // add(b);
-    add(grid);
-    setSize(480, 360); // width, height
-    // setLayout(null);
+    setLayout(new BorderLayout());
+    add(setupButton, BorderLayout.LINE_START);
+    add(goButton, BorderLayout.LINE_END);
+    add(panel, BorderLayout.CENTER);
+    add(lorenzCurveGraph, BorderLayout.PAGE_START);
+    add(giniIndexReserveGraph, BorderLayout.PAGE_END);
     pack();
+    setSize(1024, 768); // width, height
     setVisible(true);
+
   }
 
   public void update(Turtle[] turtles, Patch[][] patches) {
@@ -64,6 +97,14 @@ public class Graphics extends JFrame {
         labels[turtles[i].getY()][turtles[i].getX()].setIcon(turtleRed);
       }
     }
+    panel.revalidate();
+    panel.repaint();
+    lorenzCurveGraph.setScores(model.getCalculator().getLorenzPoints());
+    lorenzCurveGraph.revalidate();
+    lorenzCurveGraph.repaint();
+    giniIndexReserveGraph.addScore(model.getCalculator().getGiniIndexReserve());
+    giniIndexReserveGraph.revalidate();
+    giniIndexReserveGraph.repaint();
   }
 
   private Color[] getColorBands(Integer bands) {

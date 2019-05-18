@@ -18,7 +18,7 @@ public class WealthDistribution {
   private Turtle[] turtles;
   private Calculator calculator;
   private Integer ticks;
-  private Graphics graphics;
+  private static Graphics graphics;
 
   public WealthDistribution() {}
 
@@ -29,10 +29,10 @@ public class WealthDistribution {
     // call other procedures to setup various parts of the world
     setupPatches();
     setupTurtles();
-    graphics = new Graphics(turtles, patches);
     calculator = new Calculator();
     calculator.updateLorenzAndGini(turtles, patches);
     resetTicks();
+    graphics.update(turtles, patches);
   }
 
   private void clearAll() {
@@ -56,7 +56,6 @@ public class WealthDistribution {
     }
     // spread that grain around the window a little and put a little back
     // into the patches that are the "best land" found above
-    // TODO: confirm how diffuse function works
     for (int i = 0; i < 5; i ++) {
       for (int y = 0; y < patches.length; y ++) {
         for (int x = 0; x < patches[y].length; x ++) {
@@ -222,11 +221,24 @@ public class WealthDistribution {
     System.out.print("\n");
   }
 
+  public Patch[][] getPatches() {
+    return patches;
+  }
+
+  public Turtle[] getTurtles() {
+    return turtles;
+  }
+
+  public Calculator getCalculator() {
+    return calculator;
+  }
+
   public static void main(String[] args) {
     WealthDistribution model = new WealthDistribution();
+    graphics = new Graphics(model);
     model.setup();
     model.go();
-    System.exit(0);
+    // System.exit(0);
   }
 
 }

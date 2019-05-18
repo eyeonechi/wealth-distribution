@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Patch {
 
   public static final Integer NUM_GRAIN_GROWN = 4;
@@ -8,6 +10,7 @@ public class Patch {
   private Integer maxGrainHere;
 
   private Integer countTurtlesHere;
+  private JLabel label;
 
   public Patch(Integer x, Integer y, Integer grainHere, Integer maxGrainHere) {
     this.x = x;
@@ -15,6 +18,8 @@ public class Patch {
     this.grainHere = grainHere;
     this.maxGrainHere = maxGrainHere;
     this.countTurtlesHere = 0;
+    label = new JLabel();
+    label.setOpaque(true);
   }
 
   // use color to indicate grain level
@@ -66,6 +71,10 @@ public class Patch {
 
   public void setMaxGrainHere(Double newMaxGrainHere) {
     maxGrainHere = (int) Math.round(newMaxGrainHere);
+  }
+
+  public JLabel getLabel() {
+    return label;
   }
 
 }
