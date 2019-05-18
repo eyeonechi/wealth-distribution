@@ -226,6 +226,7 @@ public class WealthDistribution {
     WealthDistribution model = new WealthDistribution();
     model.setup();
     model.go();
+    System.exit(0);
   }
 
 }

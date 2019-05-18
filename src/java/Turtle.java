@@ -51,9 +51,9 @@ public class Turtle {
   public void recolorTurtles() {
     // TODO: let max-wealth max [wealth] of turtles
     maxWealth = 0;
-    if (wealth <= maxWealth / 3) {
+    if (wealth <= maxWealth / 3.0) {
       color = "red";
-    } else if (wealth <= (maxWealth * 2 / 3)) {
+    } else if (wealth <= (maxWealth * 2 / 3.0)) {
       color = "green";
     } else {
       color = "blue";
@@ -177,6 +177,10 @@ public class Turtle {
 
   public Integer getY() {
     return y;
+  }
+
+  public String getColor() {
+    return color;
   }
 
 }
