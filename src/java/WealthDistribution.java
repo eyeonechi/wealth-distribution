@@ -5,12 +5,8 @@ public class WealthDistribution {
   public static final Integer NUM_PATCH_ROWS = 20;
   public static final Integer NUM_PATCH_COLS = 20;
   public static final Integer MAX_TICKS = 500;
-
   public static final Integer MAX_GRAIN = 50;
-  // public static final Double GINI_INDEX_RESERVE;
-  // public static final Double LORENZ_POINTS;
-
-  public static final Integer NUM_PEOPLE = 20; // 250;
+  public static final Integer NUM_PEOPLE = 20;
   public static final Integer PERCENT_BEST_LAND = 10;
   public static final Integer GRAIN_GROWTH_INTERVAL = 5;
 
@@ -19,22 +15,28 @@ public class WealthDistribution {
   private Calculator calculator;
   private Integer ticks;
   private Integer maxWealth;
-  private static Graphics graphics;
+  private Graphics graphics;
+  private Console console;
 
-  public WealthDistribution() {}
+  public WealthDistribution() {
+    graphics = new Graphics(this);
+    console = new Console(this);
+  }
 
-  // setup and helpers
-  public void setup() {
-    maxWealth = 0;
-    clearAll();
-    // set global variables to appropriate values
-    // call other procedures to setup various parts of the world
-    setupPatches();
-    setupTurtles();
-    calculator = new Calculator();
-    calculator.updateLorenzAndGini(turtles, patches);
-    resetTicks();
-    graphics.update(turtles, patches);
+  public Patch[][] getPatches() {
+    return patches;
+  }
+
+  public Turtle[] getTurtles() {
+    return turtles;
+  }
+
+  public Calculator getCalculator() {
+    return calculator;
+  }
+
+  public Integer getTicks() {
+    return ticks;
   }
 
   private void clearAll() {}
@@ -178,6 +180,23 @@ public class WealthDistribution {
     ticks = 0;
   }
 
+  // setup and helpers
+  public void setup() {
+    maxWealth = 0;
+    clearAll();
+    // set global variables to appropriate values
+    // call other procedures to setup various parts of the world
+    setupPatches();
+    setupTurtles();
+    calculator = new Calculator();
+    calculator.updateLorenzAndGini(turtles, patches);
+    resetTicks();
+    // graphical output
+    graphics.update(ticks, turtles, patches, calculator);
+    // console output
+    console.update(ticks, turtles, patches, calculator);
+  }
+
   // go and helpers
   public void go() {
     for (int i = 0; i < turtles.length; i ++) {
@@ -203,54 +222,10 @@ public class WealthDistribution {
       }
       calculator.updateLorenzAndGini(turtles, patches);
       // graphical output
-      graphics.update(turtles, patches);
-      // print output
-      visualiseModel();
+      graphics.update(ticks, turtles, patches, calculator);
+      // console output
+      console.update(ticks, turtles, patches, calculator);
     }
-  }
-
-  // generates a console visualisation of the model
-  private void visualiseModel() {
-    System.out.println("Tick " + ticks);
-    for (int y = 0; y < patches.length; y ++) {
-      for (int x = 0; x < patches[y].length; x ++) {
-        if (patches[y][x].getCountTurtlesHere() > 0) {
-          System.out.printf("%2d", patches[y][x].getCountTurtlesHere());
-        } else {
-          if (patches[y][x].getGrainHere() > 0) {
-            System.out.printf("..");
-          } else {
-            System.out.printf("__");
-          }
-        }
-      }
-      System.out.print("\n");
-    }
-    System.out.print("\n");
-  }
-
-  public Patch[][] getPatches() {
-    return patches;
-  }
-
-  public Turtle[] getTurtles() {
-    return turtles;
-  }
-
-  public Calculator getCalculator() {
-    return calculator;
-  }
-
-  public Integer getTicks() {
-    return ticks;
-  }
-
-  public static void main(String[] args) {
-    WealthDistribution model = new WealthDistribution();
-    graphics = new Graphics(model);
-    model.setup();
-    model.go();
-    // System.exit(0);
   }
 
 }

@@ -11,11 +11,9 @@ public class Calculator {
   private Double giniIndexReserve;
   private List<Double> lorenzPoints;
 
-  public Calculator() {
-  }
+  public Calculator() {}
 
   public void updateLorenzAndGini(Turtle[] turtles, Patch[][] patches) {
-    lorenzPoints = new ArrayList<Double>();
     sortedWealths = new Double[turtles.length];
     for (int i = 0; i < turtles.length; i ++) {
       sortedWealths[i] = Double.valueOf(turtles[i].getWealth());
@@ -28,12 +26,10 @@ public class Calculator {
     wealthSumSoFar = 0.0;
     index = 0;
     giniIndexReserve = 0.0;
-    // TODO: confirm this
-    // lorenzPoints = new Double[WealthDistribution.MAX_TICKS];
+    lorenzPoints = new ArrayList<Double>();
     // now actually plot the Lorenz curve
     // along the way, we also calculate the Gini index
     for (int i = 0; i < WealthDistribution.NUM_PEOPLE; i ++) {
-      // TODO: verify these
       wealthSumSoFar += sortedWealths[i];
       lorenzPoints.add((wealthSumSoFar / totalWealth) * 100);
       index += 1;

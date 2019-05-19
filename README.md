@@ -12,4 +12,4 @@ Java 8
 ## Instructions
 cd src/java
 javac *.java
-java Main
+java JNetLogo

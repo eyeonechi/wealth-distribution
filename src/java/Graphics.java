@@ -39,35 +39,57 @@ public class Graphics extends JFrame {
   public Graphics(WealthDistribution model) {
     this.model = model;
 
+    // images and colors
     colorBands = getColorBands(WealthDistribution.MAX_GRAIN);
     turtleRed = new ImageIcon("turtleRed.jpg");
     turtleBlue = new ImageIcon("turtleBlue.jpg");
     turtleGreen = new ImageIcon("turtleGreen.jpg");
 
+    // setup button
     setupButton = new JButton("setup");
-    // setupButton.setBounds(0, 0, 100, 40); // x, y, width, height
     setupButton.setPreferredSize(new Dimension(100, 40));
     setupButton.setBackground(Color.white);
     setupButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         model.setup();
+        goButton.setEnabled(true);
       }
     });
 
+    // go button
     goButton = new JButton("go");
-    // goButton.setBounds(100, 0, 100, 40); // x, y, width, height
+    goButton.setEnabled(false);
     goButton.setPreferredSize(new Dimension(100, 40));
     goButton.setBackground(Color.white);
     goButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        model.go();
+        Thread thread = null;
+        if (e.getActionCommand().equals("go")) {
+          thread = new Thread() {
+            @Override
+            public void run() {
+              model.go();
+            }
+          };
+          setupButton.setEnabled(false);
+          thread.start();
+        } else {
+          while (thread != null) {
+            try {
+              thread.join();
+              setupButton.setEnabled(true);
+            } catch (Exception e1) {
+              e1.printStackTrace();
+            }
+          }
+        }
       }
     });
 
+    // display panel
     labels = new JLabel[WealthDistribution.NUM_PATCH_ROWS][WealthDistribution.NUM_PATCH_COLS];
     displayPanel = new JPanel();
     displayPanel.setPreferredSize(new Dimension(480, 480));
-    // displayPanel.setBounds(480, 360, 0, 40); // x, y, width, height
     displayPanel.setLayout(new GridLayout(WealthDistribution.NUM_PATCH_ROWS, WealthDistribution.NUM_PATCH_COLS));
     for (int y = 0; y < WealthDistribution.NUM_PATCH_ROWS; y ++) {
       for (int x = 0; x < WealthDistribution.NUM_PATCH_COLS; x ++) {
@@ -78,6 +100,7 @@ public class Graphics extends JFrame {
       }
     }
 
+    // variable panel
     ticksLabel = new JLabel();
     ticksLabel.setText("Tick: 0");
     numPeopleLabel = new JLabel();
@@ -109,12 +132,14 @@ public class Graphics extends JFrame {
     variablePanel.add(grainGrowthIntervalLabel);
     variablePanel.add(numGrainGrownLabel);
 
+    // control panel
     controlPanel = new JPanel();
     controlPanel.setLayout(new GridLayout(1, 2));
     controlPanel.setPreferredSize(new Dimension(480, 40));
     controlPanel.add(setupButton);
     controlPanel.add(goButton);
 
+    // graph panel
     lorenzCurveGraph = new Graph(true);
     lorenzCurveGraph.setPreferredSize(new Dimension(240, 160));
     giniIndexReserveGraph = new Graph(false);
@@ -125,6 +150,7 @@ public class Graphics extends JFrame {
     graphPanel.add(lorenzCurveGraph);
     graphPanel.add(giniIndexReserveGraph);
 
+    // info panel
     infoTextArea = new JTextArea(9, 20);
     infoTextArea.setEditable(false);
     infoTextArea.setLineWrap(true);
@@ -134,6 +160,7 @@ public class Graphics extends JFrame {
     infoPanel.setPreferredSize(new Dimension(240, 360));
     infoPanel.add(infoTextArea);
 
+    // frame layout
     setLayout(new BorderLayout());
     add(controlPanel, BorderLayout.PAGE_START);
     add(variablePanel, BorderLayout.LINE_START);
@@ -144,19 +171,16 @@ public class Graphics extends JFrame {
     // setSize(1024, 768); // width, height
     setVisible(true);
     setExtendedState(getExtendedState() | Frame.MAXIMIZED_BOTH);
-
   }
 
-  public void update(Turtle[] turtles, Patch[][] patches) {
+  public void update(Integer ticks, Turtle[] turtles, Patch[][] patches, Calculator calculator) {
     for (int y = 0; y < patches.length; y ++) {
       for (int x = 0; x < patches[y].length; x ++) {
         labels[y][x].setIcon(null);
         if (patches[y][x].getGrainHere() == 0) {
           labels[y][x].setBackground(colorBands[patches[y][x].getGrainHere()]);
-          // labels[y][x].setText(String.format("%2d", patches[y][x].getGrainHere()));
         } else {
           labels[y][x].setBackground(colorBands[patches[y][x].getGrainHere()]);
-          // labels[y][x].setText(String.format("%2d", patches[y][x].getGrainHere()));
         }
       }
     }
@@ -169,15 +193,12 @@ public class Graphics extends JFrame {
         labels[turtles[i].getY()][turtles[i].getX()].setIcon(turtleRed);
       }
     }
-    displayPanel.revalidate();
-    displayPanel.repaint();
-    lorenzCurveGraph.setScores(model.getCalculator().getLorenzPoints());
-    lorenzCurveGraph.revalidate();
-    lorenzCurveGraph.repaint();
-    giniIndexReserveGraph.addScore(model.getCalculator().getGiniIndexReserve());
-    giniIndexReserveGraph.revalidate();
-    giniIndexReserveGraph.repaint();
-    ticksLabel.setText("Tick: " + model.getTicks());
+    lorenzCurveGraph.setScores(calculator.getLorenzPoints());
+    giniIndexReserveGraph.addScore(calculator.getGiniIndexReserve());
+    ticksLabel.setText("Tick: " + ticks);
+    if (ticks > 0) {
+      goButton.setText("stop");
+    }
   }
 
   private Color[] getColorBands(Integer bands) {
