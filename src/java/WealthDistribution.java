@@ -2,8 +2,8 @@ import java.util.Random;
 
 public class WealthDistribution {
 
-  public static final Integer NUM_PATCH_ROWS = 20;
-  public static final Integer NUM_PATCH_COLS = 20;
+  public static final Integer NUM_PATCH_ROWS = 51;
+  public static final Integer NUM_PATCH_COLS = 51;
   public static final Integer MAX_TICKS = 500;
   public static final Integer MAX_GRAIN = 50;
   public static final Integer NUM_PEOPLE = 20;
