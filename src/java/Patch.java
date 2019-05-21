@@ -1,6 +1,6 @@
 public class Patch {
 
-  public static final Integer NUM_GRAIN_GROWN = 4;
+  public static final Integer NUM_GRAIN_GROWN = 1;
 
   private Integer x;
   private Integer y;
