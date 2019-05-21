@@ -28,10 +28,12 @@ public class Graph extends JPanel {
   private int numberYDivisions = 10;
   private List<Double> scores;
   private Boolean equalityLine;
+  private Boolean giniIndex;
 
-  public Graph(Boolean equalityLine) {
+  public Graph(Boolean equalityLine, Boolean giniIndex) {
     this.scores = new ArrayList<Double>();
     this.equalityLine = equalityLine;
+    this.giniIndex = giniIndex;
   }
 
   @Override
@@ -67,8 +69,10 @@ public class Graph extends JPanel {
     for (int i = 0; i < numberYDivisions + 1; i++) {
       int x0 = padding + labelPadding;
       int x1 = pointWidth + padding + labelPadding;
-      int y0 = getHeight() - ((i * (getHeight() - padding * 2 - labelPadding)) / numberYDivisions + padding + labelPadding);
-      int y1 = y0;
+      int y0;
+      int y1;
+      y0 = getHeight() - ((i * (getHeight() - padding * 2 - labelPadding)) / numberYDivisions + padding + labelPadding);
+      y1 = y0;
       if (scores.size() > 0) {
         g2.setColor(gridColor);
         g2.drawLine(padding + labelPadding + 1 + pointWidth, y0, getWidth() - padding, y1);
@@ -133,6 +137,7 @@ public class Graph extends JPanel {
   }
 
   private double getMinScore() {
+    if (giniIndex) return 0;
     double minScore = Double.MAX_VALUE;
     for (Double score : scores) {
       minScore = Math.min(minScore, score);
@@ -141,6 +146,7 @@ public class Graph extends JPanel {
   }
 
   private double getMaxScore() {
+    if (giniIndex) return 1;
     double maxScore = Double.MIN_VALUE;
     for (Double score : scores) {
       maxScore = Math.max(maxScore, score);

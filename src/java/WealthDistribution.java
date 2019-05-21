@@ -2,8 +2,8 @@ import java.util.Random;
 
 public class WealthDistribution {
 
-  public static final Integer NUM_PATCH_ROWS = 51;
-  public static final Integer NUM_PATCH_COLS = 51;
+  public static final Integer NUM_PATCH_ROWS = 20;
+  public static final Integer NUM_PATCH_COLS = 20;
   public static final Integer MAX_TICKS = 500;
   public static final Integer MAX_GRAIN = 50;
   public static final Integer NUM_PEOPLE = 20;
@@ -158,7 +158,7 @@ public class WealthDistribution {
     turtles = new Turtle[NUM_PEOPLE];
     // setDefaultShape(turtles, "person")
     for (int i = 0; i < turtles.length; i ++) {
-      turtles[i] = new Turtle(0, 0, 0, 0, 0, new Random().nextInt(NUM_PATCH_COLS), new Random().nextInt(NUM_PATCH_ROWS));
+      turtles[i] = new Turtle(new Random().nextInt(NUM_PATCH_COLS), new Random().nextInt(NUM_PATCH_ROWS));
       // put turtles on patch centers
       turtles[i].fd(patches, 0);
       // easier to see

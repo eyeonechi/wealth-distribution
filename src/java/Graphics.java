@@ -34,7 +34,7 @@ public class Graphics extends JFrame {
   JLabel numGrainGrownLabel;
 
   private Graph lorenzCurveGraph;
-  private Graph giniIndexReserveGraph;
+  private Graph giniIndexGraph;
 
   public Graphics(WealthDistribution model) {
     this.model = model;
@@ -140,15 +140,15 @@ public class Graphics extends JFrame {
     controlPanel.add(goButton);
 
     // graph panel
-    lorenzCurveGraph = new Graph(true);
+    lorenzCurveGraph = new Graph(true, false);
     lorenzCurveGraph.setPreferredSize(new Dimension(240, 160));
-    giniIndexReserveGraph = new Graph(false);
-    giniIndexReserveGraph.setPreferredSize(new Dimension(240, 160));
+    giniIndexGraph = new Graph(false, true);
+    giniIndexGraph.setPreferredSize(new Dimension(240, 160));
     graphPanel = new JPanel();
     graphPanel.setLayout(new GridLayout(1, 2));
     graphPanel.setPreferredSize(new Dimension(480, 160));
     graphPanel.add(lorenzCurveGraph);
-    graphPanel.add(giniIndexReserveGraph);
+    graphPanel.add(giniIndexGraph);
 
     // info panel
     infoTextArea = new JTextArea(9, 20);
@@ -194,7 +194,7 @@ public class Graphics extends JFrame {
       }
     }
     lorenzCurveGraph.setScores(calculator.getLorenzPoints());
-    giniIndexReserveGraph.addScore(calculator.getGiniIndexReserve());
+    giniIndexGraph.addScore(calculator.getGiniIndex());
     ticksLabel.setText("Tick: " + ticks);
     if (ticks > 0) {
       goButton.setText("stop");
