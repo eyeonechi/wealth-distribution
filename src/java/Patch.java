@@ -18,9 +18,7 @@ public class Patch {
   }
 
   // use color to indicate grain level
-  public void recolorPatch() {
-    // TODO: is this used?
-  }
+  public void recolorPatch() {}
 
   public void growGrain() {
     // if a patch does not have it's maximum amount of grain, add

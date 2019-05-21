@@ -2,40 +2,44 @@ import java.util.Random;
 
 public class WealthDistribution {
 
-  public static final Integer NUM_PATCH_ROWS = 20;
-  public static final Integer NUM_PATCH_COLS = 20;
+  public static final Integer NUM_PATCH_ROWS = 51;
+  public static final Integer NUM_PATCH_COLS = 51;
   public static final Integer MAX_TICKS = 500;
-
   public static final Integer MAX_GRAIN = 50;
-  // public static final Double GINI_INDEX_RESERVE;
-  // public static final Double LORENZ_POINTS;
-
-  public static final Integer NUM_PEOPLE = 20; // 250;
+  public static final Integer NUM_PEOPLE = 20;
   public static final Integer PERCENT_BEST_LAND = 10;
-  public static final Integer GRAIN_GROWTH_INTERVAL = 10;
+  public static final Integer GRAIN_GROWTH_INTERVAL = 5;
 
   private Patch[][] patches;
   private Turtle[] turtles;
   private Calculator calculator;
   private Integer ticks;
+  private Integer maxWealth;
+  private Graphics graphics;
+  private Console console;
 
-  public WealthDistribution() {}
-
-  // setup and helpers
-  public void setup() {
-    clearAll();
-    // set global variables to appropriate values
-    // call other procedures to setup various parts of the world
-    setupPatches();
-    setupTurtles();
-    calculator = new Calculator();
-    calculator.updateLorenzAndGini(turtles, patches);
-    resetTicks();
+  public WealthDistribution() {
+    graphics = new Graphics(this);
+    console = new Console(this);
   }
 
-  private void clearAll() {
-    // TODO: is this used?
+  public Patch[][] getPatches() {
+    return patches;
   }
+
+  public Turtle[] getTurtles() {
+    return turtles;
+  }
+
+  public Calculator getCalculator() {
+    return calculator;
+  }
+
+  public Integer getTicks() {
+    return ticks;
+  }
+
+  private void clearAll() {}
 
   // setup the initial amounts of grain each patch has
   private void setupPatches() {
@@ -54,7 +58,6 @@ public class WealthDistribution {
     }
     // spread that grain around the window a little and put a little back
     // into the patches that are the "best land" found above
-    // TODO: confirm how diffuse function works
     for (int i = 0; i < 5; i ++) {
       for (int y = 0; y < patches.length; y ++) {
         for (int x = 0; x < patches[y].length; x ++) {
@@ -153,20 +156,23 @@ public class WealthDistribution {
   // setup the initial values for the turtle variables
   private void setupTurtles() {
     turtles = new Turtle[NUM_PEOPLE];
-    // TODO: what is this?
     // setDefaultShape(turtles, "person")
     for (int i = 0; i < turtles.length; i ++) {
       turtles[i] = new Turtle(0, 0, 0, 0, 0, new Random().nextInt(NUM_PATCH_COLS), new Random().nextInt(NUM_PATCH_ROWS));
       // put turtles on patch centers
       turtles[i].fd(patches, 0);
       // easier to see
-      // TODO: dont know what this is
       // turtles[i].setSize(1.5)
       turtles[i].setInitialTurtleVars();
       turtles[i].setAge();
     }
     for (int i = 0; i < turtles.length; i ++) {
-      turtles[i].recolorTurtles();
+      if (turtles[i].getWealth() > maxWealth) {
+        maxWealth = turtles[i].getWealth();
+      }
+    }
+    for (int i = 0; i < turtles.length; i ++) {
+      turtles[i].recolorTurtles(maxWealth);
     }
   }
 
@@ -174,15 +180,37 @@ public class WealthDistribution {
     ticks = 0;
   }
 
+  // setup and helpers
+  public void setup() {
+    maxWealth = 0;
+    clearAll();
+    // set global variables to appropriate values
+    // call other procedures to setup various parts of the world
+    setupPatches();
+    setupTurtles();
+    calculator = new Calculator();
+    calculator.updateLorenzAndGini(turtles, patches);
+    resetTicks();
+    // graphical output
+    graphics.update(ticks, turtles, patches, calculator);
+    // console output
+    console.update(ticks, turtles, patches, calculator);
+  }
+
   // go and helpers
   public void go() {
+    for (int i = 0; i < turtles.length; i ++) {
+      if (turtles[i].getWealth() > maxWealth) {
+        maxWealth = turtles[i].getWealth();
+      }
+    }
     for (ticks = 0; ticks < MAX_TICKS + 1; ticks ++) {
       for (int i = 0; i < turtles.length; i ++) {
         // choose direction holding most grain within the turtle's vision
         turtles[i].turnTowardsGrain(patches);
         turtles[i].harvest(patches);
         turtles[i].moveEatAgeDie(patches);
-        turtles[i].recolorTurtles();
+        turtles[i].recolorTurtles(maxWealth);
       }
       // grow grain every GRAIN_GROWTH_INTERVAL clock ticks
       if (ticks % GRAIN_GROWTH_INTERVAL == 0) {
@@ -193,35 +221,11 @@ public class WealthDistribution {
         }
       }
       calculator.updateLorenzAndGini(turtles, patches);
-      // print output
-      visualiseModel();
+      // graphical output
+      graphics.update(ticks, turtles, patches, calculator);
+      // console output
+      console.update(ticks, turtles, patches, calculator);
     }
-  }
-
-  // generates a console visualisation of the model
-  private void visualiseModel() {
-    System.out.println("Tick " + ticks);
-    for (int y = 0; y < patches.length; y ++) {
-      for (int x = 0; x < patches[y].length; x ++) {
-        if (patches[y][x].getCountTurtlesHere() > 0) {
-          System.out.printf("%2d", patches[y][x].getCountTurtlesHere());
-        } else {
-          if (patches[y][x].getGrainHere() > 0) {
-            System.out.printf("..");
-          } else {
-            System.out.printf("__");
-          }
-        }
-      }
-      System.out.print("\n");
-    }
-    System.out.print("\n");
-  }
-
-  public static void main(String[] args) {
-    WealthDistribution model = new WealthDistribution();
-    model.setup();
-    model.go();
   }
 
 }
