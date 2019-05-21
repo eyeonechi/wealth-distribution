@@ -24,12 +24,7 @@ public class Turtle {
   private Integer total;
   private Integer howFar;
 
-  public Turtle(Integer age, Integer wealth, Integer lifeExpectancy, Integer metabolism, Integer vision, Integer x, Integer y) {
-    this.age = age;
-    this.wealth = wealth;
-    this.lifeExpectancy = lifeExpectancy;
-    this.metabolism = metabolism;
-    this.vision = vision;
+  public Turtle(Integer x, Integer y) {
     this.x = x;
     this.y = y;
     this.heading = 0;
@@ -49,7 +44,6 @@ public class Turtle {
   // if between one and two thirds, color it green.
   // if over two thirds, color it blue.
   public void recolorTurtles(Integer maxWealth) {
-    maxWealth = 0;
     if (wealth <= maxWealth / 3.0) {
       color = "red";
     } else if (wealth <= (maxWealth * 2 / 3.0)) {
