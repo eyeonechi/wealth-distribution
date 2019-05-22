@@ -30,12 +30,12 @@ public class Turtle {
     this.heading = 0;
   }
 
-  public void setInitialTurtleVars() {
+  public void setInitialTurtleVars(Integer initialWealth) {
     age = 0;
     // face one-of neighbors4
     lifeExpectancy = LIFE_EXPECTANCY_MIN + new Random().nextInt(LIFE_EXPECTANCY_MAX - LIFE_EXPECTANCY_MIN + 1);
     metabolism = 1 + new Random().nextInt(METABOLISM_MAX);
-    wealth = metabolism + new Random().nextInt(50);
+    wealth = initialWealth + metabolism + new Random().nextInt(50);
     vision = 1 + new Random().nextInt(MAX_VISION);
   }
 
@@ -99,7 +99,7 @@ public class Turtle {
     // or if some random factor holds, then you "die" and are "reborn"
     // (in fact, your variables are just reset to new random values)
     if (wealth < 0 || age >= lifeExpectancy) {
-      setInitialTurtleVars();
+      setInitialTurtleVars(wealth);
     }
   }
 
