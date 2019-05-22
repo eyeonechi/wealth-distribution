@@ -163,7 +163,7 @@ public class WealthDistribution {
       turtles[i].fd(patches, 0);
       // easier to see
       // turtles[i].setSize(1.5)
-      turtles[i].setInitialTurtleVars();
+      turtles[i].setInitialTurtleVars(0);
       turtles[i].setAge();
     }
     for (int i = 0; i < turtles.length; i ++) {
