@@ -108,20 +108,32 @@ public class Turtle {
     howFar = 1;
     for (int i = 0; i < vision; i ++) {
       if (heading == 0) {
-        if ((x + i) < (WealthDistribution.NUM_PATCH_COLS - 1)) {
+        if((x+i) >= WealthDistribution.NUM_PATCH_COLS ){
+          total += patches[y][(x+i)%(WealthDistribution.NUM_PATCH_COLS)].getGrainHere();
+        }
+        else{
           total += patches[y][x + i].getGrainHere();
         }
       } else if (heading == 90) {
-        if ((y - i) > 0) {
+        if ((y-i) <0) {
+          total += patches[WealthDistribution.NUM_PATCH_ROWS - y - i][x].getGrainHere();
+        }
+        else{
           total += patches[y - i][x].getGrainHere();
         }
       } else if (heading == 180) {
-        if ((x - i) > 0) {
+        if ((x-i) <0) {
+          total += patches[y][WealthDistribution.NUM_PATCH_COLS - x - i].getGrainHere();
+        }
+        else {
           total += patches[y][x - i].getGrainHere();
         }
       } else {
-        if ((y + i) < (WealthDistribution.NUM_PATCH_ROWS - 1)) {
-          total += patches[y + i][x].getGrainHere();
+          if((y+i) >= WealthDistribution.NUM_PATCH_ROWS ){
+            total += patches[(y+i)%(WealthDistribution.NUM_PATCH_ROWS)][x].getGrainHere();
+          }
+          else {
+            total += patches[y + i][x].getGrainHere();
         }
       }
       howFar = howFar + 1;
