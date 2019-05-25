@@ -7,6 +7,7 @@ public class Turtle {
   public static final Integer METABOLISM_MAX = 15;
   public static final Integer LIFE_EXPECTANCY_MIN = 1;
   public static final Integer LIFE_EXPECTANCY_MAX = 83;
+  public static final Double MAX_INHERITANCE_RATE = 0.1;
 
   private Integer age;
   private Integer wealth;
@@ -99,7 +100,12 @@ public class Turtle {
     // or if some random factor holds, then you "die" and are "reborn"
     // (in fact, your variables are just reset to new random values)
     if (wealth < 0 || age >= lifeExpectancy) {
-      setInitialTurtleVars(wealth);
+      if (wealth < 0) {
+        setInitialTurtleVars(0);
+      }
+      else {
+        setInitialTurtleVars((int) Math.round(Math.floor(wealth * MAX_INHERITANCE_RATE)));
+      }
     }
   }
 
