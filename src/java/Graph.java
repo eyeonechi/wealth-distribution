@@ -40,10 +40,15 @@ public class Graph extends JPanel {
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+      RenderingHints.KEY_ANTIALIASING,
+      RenderingHints.VALUE_ANTIALIAS_ON
+    );
 
-    double xScale = ((double) getWidth() - (2 * padding) - labelPadding) / (scores.size() - 1);
-    double yScale = ((double) getHeight() - 2 * padding - labelPadding) / (getMaxScore() - getMinScore());
+    double xScale = ((double) getWidth() - (2 * padding) - labelPadding
+                     ) / (scores.size() - 1);
+    double yScale = ((double) getHeight() - 2 * padding - labelPadding
+                     ) / (getMaxScore() - getMinScore());
 
     List<Point> graphPoints = new ArrayList<>();
     for (int i = 0; i < scores.size(); i++) {
@@ -54,7 +59,12 @@ public class Graph extends JPanel {
 
     // draw white background
     g2.setColor(Color.WHITE);
-    g2.fillRect(padding + labelPadding, padding, getWidth() - (2 * padding) - labelPadding, getHeight() - 2 * padding - labelPadding);
+    g2.fillRect(
+      padding + labelPadding,
+      padding,
+      getWidth() - (2 * padding) - labelPadding,
+      getHeight() - 2 * padding - labelPadding
+    );
     if (equalityLine) {
       g2.setColor(Color.RED);
       int x0 = 0 + padding + labelPadding;
@@ -71,16 +81,27 @@ public class Graph extends JPanel {
       int x1 = pointWidth + padding + labelPadding;
       int y0;
       int y1;
-      y0 = getHeight() - ((i * (getHeight() - padding * 2 - labelPadding)) / numberYDivisions + padding + labelPadding);
+      y0 = getHeight() - ((i * (getHeight() - padding * 2 - labelPadding)
+                          ) / numberYDivisions + padding + labelPadding);
       y1 = y0;
       if (scores.size() > 0) {
         g2.setColor(gridColor);
-        g2.drawLine(padding + labelPadding + 1 + pointWidth, y0, getWidth() - padding, y1);
+        g2.drawLine(
+          padding + labelPadding + 1 + pointWidth,
+          y0,
+          getWidth() - padding, y1
+        );
         g2.setColor(Color.BLACK);
-        String yLabel = ((int) ((getMinScore() + (getMaxScore() - getMinScore()) * ((i * 1.0) / numberYDivisions)) * 100)) / 100.0 + "";
+        String yLabel = ((int) ((
+          getMinScore() + (getMaxScore() - getMinScore()
+          ) * ((i * 1.0) / numberYDivisions)) * 100)) / 100.0 + "";
         FontMetrics metrics = g2.getFontMetrics();
         int labelWidth = metrics.stringWidth(yLabel);
-        g2.drawString(yLabel, x0 - labelWidth - 5, y0 + (metrics.getHeight() / 2) - 3);
+        g2.drawString(
+          yLabel,
+          x0 - labelWidth - 5,
+          y0 + (metrics.getHeight() / 2) - 3
+        );
       }
       g2.drawLine(x0, y0, x1, y1);
     }
@@ -88,26 +109,46 @@ public class Graph extends JPanel {
     // and for x axis
     for (int i = 0; i < scores.size(); i++) {
       if (scores.size() > 1) {
-        int x0 = i * (getWidth() - padding * 2 - labelPadding) / (scores.size() - 1) + padding + labelPadding;
+        int x0 = i * (getWidth() - padding * 2 - labelPadding
+                 ) / (scores.size() - 1) + padding + labelPadding;
         int x1 = x0;
         int y0 = getHeight() - padding - labelPadding;
         int y1 = y0 - pointWidth;
         if ((i % ((int) ((scores.size() / 20.0)) + 1)) == 0) {
           g2.setColor(gridColor);
-          g2.drawLine(x0, getHeight() - padding - labelPadding - 1 - pointWidth, x1, padding);
+          g2.drawLine(
+            x0,
+            getHeight() - padding - labelPadding - 1 - pointWidth,
+            x1,
+            padding
+          );
           g2.setColor(Color.BLACK);
           String xLabel = i + "";
           FontMetrics metrics = g2.getFontMetrics();
           int labelWidth = metrics.stringWidth(xLabel);
-          g2.drawString(xLabel, x0 - labelWidth / 2, y0 + metrics.getHeight() + 3);
+          g2.drawString(
+            xLabel,
+            x0 - labelWidth / 2,
+            y0 + metrics.getHeight() + 3
+          );
         }
         g2.drawLine(x0, y0, x1, y1);
       }
     }
 
     // create x and y axes
-    g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
-    g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
+    g2.drawLine(
+      padding + labelPadding,
+      getHeight() - padding - labelPadding,
+      padding + labelPadding,
+      padding
+    );
+    g2.drawLine(
+      padding + labelPadding,
+      getHeight() - padding - labelPadding,
+      getWidth() - padding,
+      getHeight() - padding - labelPadding
+    );
 
     Stroke oldStroke = g2.getStroke();
     g2.setColor(lineColor);
@@ -162,6 +203,12 @@ public class Graph extends JPanel {
 
   public void addScore(Double score) {
     this.scores.add(score);
+    invalidate();
+    this.repaint();
+  }
+
+  public void resetScores() {
+    this.scores = new ArrayList<Double>();
     invalidate();
     this.repaint();
   }

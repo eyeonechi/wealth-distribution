@@ -9,7 +9,12 @@ public class Patch {
 
   private Integer countTurtlesHere;
 
-  public Patch(Integer x, Integer y, Integer grainHere, Integer maxGrainHere) {
+  public Patch(
+    Integer x,
+    Integer y,
+    Integer grainHere,
+    Integer maxGrainHere
+  ) {
     this.x = x;
     this.y = y;
     this.grainHere = grainHere;
