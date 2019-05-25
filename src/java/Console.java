@@ -18,9 +18,14 @@ public class Console {
   }
 
   // generates a console visualisation of the model
-  public void update(Integer ticks, Turtle[] turtles, Patch[][] patches, Calculator calculator) {
+  public void update(
+    Integer ticks,
+    Turtle[] turtles,
+    Patch[][] patches,
+    Calculator calculator
+  ) {
     System.out.println("Tick " + ticks);
-    
+
     debug(turtles, patches);
   }
 
