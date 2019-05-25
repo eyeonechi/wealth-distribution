@@ -32,6 +32,7 @@ to setup
   setup-patches
   setup-turtles
   update-lorenz-and-gini
+  print "Red   Green   Blue   Gini"
   reset-ticks
 end
 
@@ -113,8 +114,14 @@ to go
     [ ask patches [ grow-grain ] ]
 
   update-lorenz-and-gini
+  dump-to-screen
   tick
 end
+
+to dump-to-screen
+  type count turtles with [color = red] type "," type count turtles with [color = green] type "," type count turtles with [color = blue] type "," print (gini-index-reserve / num-people) / 0.5
+end
+
 
 ;; determine the direction which is most profitable for each turtle in
 ;; the surrounding patches within the turtles' vision
@@ -328,7 +335,7 @@ num-people
 num-people
 2
 1000
-250.0
+935.0
 1
 1
 NIL
@@ -343,7 +350,7 @@ percent-best-land
 percent-best-land
 5
 25
-10.0
+25.0
 1
 1
 %
@@ -393,7 +400,7 @@ num-grain-grown
 num-grain-grown
 1
 10
-4.0
+10.0
 1
 1
 NIL
@@ -468,6 +475,39 @@ false
 "" ""
 PENS
 "default" 1.0 0 -13345367 true "" "plot (gini-index-reserve / num-people) / 0.5"
+
+MONITOR
+802
+93
+885
+138
+Red Turtles
+count turtles with [color = red]
+17
+1
+11
+
+MONITOR
+799
+215
+896
+260
+Green Turtles
+count turtles with [color = green]
+17
+1
+11
+
+MONITOR
+798
+157
+884
+202
+Blue Turtles
+count turtles with [color = blue]
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
