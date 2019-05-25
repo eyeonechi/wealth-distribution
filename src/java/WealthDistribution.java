@@ -1,3 +1,4 @@
+import java.io.FileWriter;
 import java.util.Random;
 
 public class WealthDistribution {
@@ -199,33 +200,59 @@ public class WealthDistribution {
 
   // go and helpers
   public void go() {
-    for (int i = 0; i < turtles.length; i ++) {
-      if (turtles[i].getWealth() > maxWealth) {
-        maxWealth = turtles[i].getWealth();
-      }
-    }
-    for (ticks = 0; ticks < MAX_TICKS + 1; ticks ++) {
+    try {
+      FileWriter csvWriter = new FileWriter("new.csv");  
+      csvWriter.append("Red");  
+      csvWriter.append(",");  
+      csvWriter.append("Green");  
+      csvWriter.append(",");  
+      csvWriter.append("Blue");  
+      csvWriter.append(",");
+      csvWriter.append("Gini");  
+      csvWriter.append("\n");
+      csvWriter.flush();
+    
       for (int i = 0; i < turtles.length; i ++) {
-        // choose direction holding most grain within the turtle's vision
-        turtles[i].turnTowardsGrain(patches);
-        turtles[i].harvest(patches);
-        turtles[i].moveEatAgeDie(patches);
-        turtles[i].recolorTurtles(maxWealth);
-      }
-      // grow grain every GRAIN_GROWTH_INTERVAL clock ticks
-      if (ticks % GRAIN_GROWTH_INTERVAL == 0) {
-        for (int y = 0; y < patches.length; y ++) {
-          for (int x = 0; x < patches[y].length; x ++) {
-            patches[y][x].growGrain();
-          }
+        if (turtles[i].getWealth() > maxWealth) {
+          maxWealth = turtles[i].getWealth();
         }
       }
-      calculator.updateLorenzAndGini(turtles, patches);
-      // graphical output
-      graphics.update(ticks, turtles, patches, calculator);
-      // console output
-      console.update(ticks, turtles, patches, calculator);
+      for (ticks = 0; ticks < MAX_TICKS + 1; ticks ++) {
+        for (int i = 0; i < turtles.length; i ++) {
+          // choose direction holding most grain within the turtle's vision
+          turtles[i].turnTowardsGrain(patches);
+          turtles[i].harvest(patches);
+          turtles[i].moveEatAgeDie(patches);
+          turtles[i].recolorTurtles(maxWealth);
+        }
+        // grow grain every GRAIN_GROWTH_INTERVAL clock ticks
+        if (ticks % GRAIN_GROWTH_INTERVAL == 0) {
+          for (int y = 0; y < patches.length; y ++) {
+            for (int x = 0; x < patches[y].length; x ++) {
+              patches[y][x].growGrain();
+            }
+          }
+        }
+        calculator.updateLorenzAndGini(turtles, patches);
+        // graphical output
+        graphics.update(ticks, turtles, patches, calculator);
+        // console output
+        console.update(ticks, turtles, patches, calculator);
+
+      
+        csvWriter.append(Integer.toString(console.red));  
+        csvWriter.append(",");  
+        csvWriter.append(Integer.toString(console.green));  
+        csvWriter.append(",");  
+        csvWriter.append(Integer.toString(console.blue));  
+        csvWriter.append(","); 
+        csvWriter.append(Double.toString(calculator.getGiniIndex()));
+        csvWriter.append("\n");
+        csvWriter.flush();
+      }
+      csvWriter.close();
+    }
+    catch(Exception e){
     }
   }
-
 }
