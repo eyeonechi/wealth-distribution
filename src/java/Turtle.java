@@ -84,8 +84,19 @@ public class Turtle {
   // turtles on a patch, divide the grain evenly among the turtles
   public void harvest(Patch[][] patches) {
     // have turtles harvest before any turtle sets the patch to 0
-    wealth = (int) Math.round(Math.floor(wealth + (
-      patches[y][x].getGrainHere() / patches[y][x].getCountTurtlesHere())));
+    Integer income = (int) Math.round(Math.floor(patches[y][x].getGrainHere() / patches[y][x].getCountTurtlesHere()));
+
+    if (income <= 20) {
+      income = income - ((int) Math.round(Math.floor(income*32/100)));
+    }
+    else if (income <= 40 & income > 20) {
+      income = income - ((int) Math.round(Math.floor(income*35/100)));
+    }
+    else {
+      income = income - ((int) Math.round(Math.floor(income*37/100)));
+    }
+
+    wealth = wealth + income;
     // now that the grain has been harvested, have the turtles make the
     // patches which they are on have no grain
     patches[y][x].setGrainHere(0.0);
