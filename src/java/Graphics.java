@@ -51,6 +51,7 @@ public class Graphics extends JFrame {
     setupButton.setBackground(Color.white);
     setupButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        resetAll();
         model.setup();
         goButton.setEnabled(true);
       }
@@ -68,7 +69,11 @@ public class Graphics extends JFrame {
           thread = new Thread() {
             @Override
             public void run() {
+              goButton.setEnabled(false);
               model.go();
+              goButton.setEnabled(false);
+              setupButton.setEnabled(true);
+              model.resetAll();
             }
           };
           setupButton.setEnabled(false);
@@ -87,10 +92,17 @@ public class Graphics extends JFrame {
     });
 
     // display panel
-    labels = new JLabel[WealthDistribution.NUM_PATCH_ROWS][WealthDistribution.NUM_PATCH_COLS];
+    labels = new JLabel[
+      WealthDistribution.NUM_PATCH_ROWS
+    ][
+      WealthDistribution.NUM_PATCH_COLS
+    ];
     displayPanel = new JPanel();
     displayPanel.setPreferredSize(new Dimension(480, 480));
-    displayPanel.setLayout(new GridLayout(WealthDistribution.NUM_PATCH_ROWS, WealthDistribution.NUM_PATCH_COLS));
+    displayPanel.setLayout(new GridLayout(
+      WealthDistribution.NUM_PATCH_ROWS,
+      WealthDistribution.NUM_PATCH_COLS
+    ));
     for (int y = 0; y < WealthDistribution.NUM_PATCH_ROWS; y ++) {
       for (int x = 0; x < WealthDistribution.NUM_PATCH_COLS; x ++) {
         JLabel label = new JLabel();
@@ -110,15 +122,25 @@ public class Graphics extends JFrame {
     metabolismMaxLabel = new JLabel();
     metabolismMaxLabel.setText("MetabolismMax: " + Turtle.METABOLISM_MAX);
     lifeExpectancyMinLabel = new JLabel();
-    lifeExpectancyMinLabel.setText("LifeExpectancyMin: " + Turtle.LIFE_EXPECTANCY_MIN);
+    lifeExpectancyMinLabel.setText(
+      "LifeExpectancyMin: " + Turtle.LIFE_EXPECTANCY_MIN
+    );
     lifeExpectancyMaxLabel = new JLabel();
-    lifeExpectancyMaxLabel.setText("LifeExpectancyMax: " + Turtle.LIFE_EXPECTANCY_MAX);
+    lifeExpectancyMaxLabel.setText(
+      "LifeExpectancyMax: " + Turtle.LIFE_EXPECTANCY_MAX
+    );
     percentBestLandLabel = new JLabel();
-    percentBestLandLabel.setText("PercentBestLand: " + WealthDistribution.PERCENT_BEST_LAND + "%");
+    percentBestLandLabel.setText(
+      "PercentBestLand: " + WealthDistribution.PERCENT_BEST_LAND + "%"
+    );
     grainGrowthIntervalLabel = new JLabel();
-    grainGrowthIntervalLabel.setText("GrainGrowthInterval: " + WealthDistribution.GRAIN_GROWTH_INTERVAL);
+    grainGrowthIntervalLabel.setText(
+      "GrainGrowthInterval: " + WealthDistribution.GRAIN_GROWTH_INTERVAL
+    );
     numGrainGrownLabel = new JLabel();
-    numGrainGrownLabel.setText("NumGrainGrown: " + Patch.NUM_GRAIN_GROWN);
+    numGrainGrownLabel.setText(
+      "NumGrainGrown: " + Patch.NUM_GRAIN_GROWN
+    );
     variablePanel = new JPanel();
     variablePanel.setLayout(new GridLayout(9, 1));
     variablePanel.setPreferredSize(new Dimension(240, 360));
@@ -154,7 +176,16 @@ public class Graphics extends JFrame {
     infoTextArea = new JTextArea(9, 20);
     infoTextArea.setEditable(false);
     infoTextArea.setLineWrap(true);
-    infoTextArea.append("This model simulates the distribution of wealth. “The rich get richer and the poor get poorer” is a familiar saying that expresses inequity in the distribution of wealth. In this simulation, we see Pareto’s law, in which there are a large number of “poor” or red people, fewer “middle class” or green people, and many fewer “rich” or blue people.");
+    infoTextArea.append("SWEN90004 Modelling Complex Software Systems\n");
+    infoTextArea.append("Wealth Distribution\n");
+    infoTextArea.append("Ivan Chee | Saksham Agrawal | Shorye Chopra\n");
+    infoTextArea.append(
+      "This model simulates the distribution of wealth. "
+      + "“The rich get richer and the poor get poorer” is a familiar saying "
+      + "that expresses inequity in the distribution of wealth. "
+      + "In this simulation, we see Pareto’s law, in which there are a "
+      + "large number of “poor” or red people, fewer “middle class” "
+      + "or green people, and many fewer “rich” or blue people.");
     infoPanel = new JPanel();
     infoPanel.setLayout(new GridLayout(1, 1));
     infoPanel.setPreferredSize(new Dimension(240, 360));
@@ -171,9 +202,15 @@ public class Graphics extends JFrame {
     // setSize(1024, 768); // width, height
     setVisible(true);
     setExtendedState(getExtendedState() | Frame.MAXIMIZED_BOTH);
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
   }
 
-  public void update(Integer ticks, Turtle[] turtles, Patch[][] patches, Calculator calculator) {
+  public void update(
+    Integer ticks,
+    Turtle[] turtles,
+    Patch[][] patches,
+    Calculator calculator
+  ) {
     for (int y = 0; y < patches.length; y ++) {
       for (int x = 0; x < patches[y].length; x ++) {
         labels[y][x].setIcon(null);
@@ -196,9 +233,6 @@ public class Graphics extends JFrame {
     lorenzCurveGraph.setScores(calculator.getLorenzPoints());
     giniIndexGraph.addScore(calculator.getGiniIndex());
     ticksLabel.setText("Tick: " + ticks);
-    if (ticks > 0) {
-      goButton.setText("stop");
-    }
   }
 
   private Color[] getColorBands(Integer bands) {
@@ -213,6 +247,11 @@ public class Graphics extends JFrame {
       );
     }
     return colorBands;
+  }
+
+  private void resetAll() {
+    lorenzCurveGraph.resetScores();
+    giniIndexGraph.resetScores();
   }
 
 }

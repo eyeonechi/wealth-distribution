@@ -63,41 +63,59 @@ public class WealthDistribution {
       for (int y = 0; y < patches.length; y ++) {
         for (int x = 0; x < patches[y].length; x ++) {
           if (patches[y][x].getGrainHere() != 0) {
-            patches[y][x].setGrainHere(Double.valueOf(patches[y][x].getMaxGrainHere()));
+            patches[y][x].setGrainHere(
+              Double.valueOf(patches[y][x].getMaxGrainHere())
+            );
           }
           // Diffuse
           Double grainShare = patches[y][x].getGrainHere() * 0.25 / 8;
           if (y > 0 && x > 0) {
             patches[y - 1][x - 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (y > 0) {
             patches[y - 1][x].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (y > 0 && x < NUM_PATCH_COLS - 1) {
             patches[y - 1][x + 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (x > 0) {
             patches[y][x - 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (x < NUM_PATCH_COLS - 1) {
             patches[y][x + 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (y < NUM_PATCH_ROWS - 1 && x > 0) {
             patches[y + 1][x - 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (y < NUM_PATCH_ROWS - 1) {
             patches[y + 1][x].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (y < NUM_PATCH_ROWS - 1 && x < NUM_PATCH_COLS - 1) {
             patches[y + 1][x + 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
         }
       }
@@ -110,35 +128,51 @@ public class WealthDistribution {
           Double grainShare = patches[y][x].getGrainHere() * 0.25 / 8;
           if (y > 0 && x > 0) {
             patches[y - 1][x - 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (y > 0) {
             patches[y - 1][x].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (y > 0 && x < NUM_PATCH_COLS - 1) {
             patches[y - 1][x + 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (x > 0) {
             patches[y][x - 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (x < NUM_PATCH_COLS - 1) {
             patches[y][x + 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (y < NUM_PATCH_ROWS - 1 && x > 0) {
             patches[y + 1][x - 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (y < NUM_PATCH_ROWS - 1) {
             patches[y + 1][x].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
           if (y < NUM_PATCH_ROWS - 1 && x < NUM_PATCH_COLS - 1) {
             patches[y + 1][x + 1].diffuseGrainHere(grainShare);
-            patches[y][x].setGrainHere(patches[y][x].getGrainHere() - grainShare);
+            patches[y][x].setGrainHere(
+              patches[y][x].getGrainHere() - grainShare
+            );
           }
         }
       }
@@ -147,8 +181,12 @@ public class WealthDistribution {
     // initial grain level is also maximum
     for (int y = 0; y < patches.length; y ++) {
       for (int x = 0; x < patches[y].length; x ++) {
-        patches[y][x].setGrainHere(Math.floor(patches[y][x].getGrainHere()));
-        patches[y][x].setMaxGrainHere(Double.valueOf(patches[y][x].getGrainHere()));
+        patches[y][x].setGrainHere(
+          Math.floor(patches[y][x].getGrainHere())
+        );
+        patches[y][x].setMaxGrainHere(
+          Double.valueOf(patches[y][x].getGrainHere())
+        );
         patches[y][x].recolorPatch();
       }
     }
@@ -159,7 +197,10 @@ public class WealthDistribution {
     turtles = new Turtle[NUM_PEOPLE];
     // setDefaultShape(turtles, "person")
     for (int i = 0; i < turtles.length; i ++) {
-      turtles[i] = new Turtle(new Random().nextInt(NUM_PATCH_COLS), new Random().nextInt(NUM_PATCH_ROWS));
+      turtles[i] = new Turtle(
+        new Random().nextInt(NUM_PATCH_COLS),
+        new Random().nextInt(NUM_PATCH_ROWS)
+      );
       // put turtles on patch centers
       turtles[i].fd(patches, 0);
       // easier to see
@@ -177,7 +218,7 @@ public class WealthDistribution {
     }
   }
 
-  private void resetTicks() {
+  public void resetTicks() {
     ticks = 0;
   }
 
@@ -201,17 +242,17 @@ public class WealthDistribution {
   // go and helpers
   public void go() {
     try {
-      FileWriter csvWriter = new FileWriter("new.csv");  
-      csvWriter.append("Red");  
-      csvWriter.append(",");  
-      csvWriter.append("Green");  
-      csvWriter.append(",");  
-      csvWriter.append("Blue");  
+      FileWriter csvWriter = new FileWriter("new.csv");
+      csvWriter.append("Red");
       csvWriter.append(",");
-      csvWriter.append("Gini");  
+      csvWriter.append("Green");
+      csvWriter.append(",");
+      csvWriter.append("Blue");
+      csvWriter.append(",");
+      csvWriter.append("Gini");
       csvWriter.append("\n");
       csvWriter.flush();
-    
+
       for (int i = 0; i < turtles.length; i ++) {
         if (turtles[i].getWealth() > maxWealth) {
           maxWealth = turtles[i].getWealth();
@@ -239,13 +280,13 @@ public class WealthDistribution {
         // console output
         console.update(ticks, turtles, patches, calculator);
 
-      
-        csvWriter.append(Integer.toString(console.red));  
-        csvWriter.append(",");  
-        csvWriter.append(Integer.toString(console.green));  
-        csvWriter.append(",");  
-        csvWriter.append(Integer.toString(console.blue));  
-        csvWriter.append(","); 
+
+        csvWriter.append(Integer.toString(console.red));
+        csvWriter.append(",");
+        csvWriter.append(Integer.toString(console.green));
+        csvWriter.append(",");
+        csvWriter.append(Integer.toString(console.blue));
+        csvWriter.append(",");
         csvWriter.append(Double.toString(calculator.getGiniIndex()));
         csvWriter.append("\n");
         csvWriter.flush();
@@ -254,5 +295,10 @@ public class WealthDistribution {
     }
     catch(Exception e){
     }
+  }
+
+  public void resetAll() {
+    calculator.resetAll();
+    resetTicks();
   }
 }

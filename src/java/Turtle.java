@@ -34,14 +34,17 @@ public class Turtle {
   public void setInitialTurtleVars(Integer initialWealth) {
     age = 0;
     // face one-of neighbors4
-    lifeExpectancy = LIFE_EXPECTANCY_MIN + new Random().nextInt(LIFE_EXPECTANCY_MAX - LIFE_EXPECTANCY_MIN + 1);
+    lifeExpectancy
+      = LIFE_EXPECTANCY_MIN
+      + new Random().nextInt(LIFE_EXPECTANCY_MAX - LIFE_EXPECTANCY_MIN + 1);
     metabolism = 1 + new Random().nextInt(METABOLISM_MAX);
     wealth = initialWealth + metabolism + new Random().nextInt(50);
     vision = 1 + new Random().nextInt(MAX_VISION);
   }
 
   // set the class of the turtles
-  // if a turtle has less than a third the wealth of the richest turtle, color it red.
+  // if a turtle has less than a third the wealth of the richest turtle,
+  // color it red.
   // if between one and two thirds, color it green.
   // if over two thirds, color it blue.
   public void recolorTurtles(Integer maxWealth) {
@@ -82,7 +85,8 @@ public class Turtle {
   // turtles on a patch, divide the grain evenly among the turtles
   public void harvest(Patch[][] patches) {
     // have turtles harvest before any turtle sets the patch to 0
-    wealth = (int) Math.round(Math.floor(wealth + (patches[y][x].getGrainHere() / patches[y][x].getCountTurtlesHere())));
+    wealth = (int) Math.round(Math.floor(wealth + (
+      patches[y][x].getGrainHere() / patches[y][x].getCountTurtlesHere())));
     // now that the grain has been harvested, have the turtles make the
     // patches which they are on have no grain
     patches[y][x].setGrainHere(0.0);
@@ -115,28 +119,36 @@ public class Turtle {
     for (int i = 0; i < vision; i ++) {
       if (heading == 0) {
         if((x+i) >= WealthDistribution.NUM_PATCH_COLS ){
-          total += patches[y][(x+i)%(WealthDistribution.NUM_PATCH_COLS)].getGrainHere();
+          total += patches[y][
+            (x + i) % (WealthDistribution.NUM_PATCH_COLS)
+          ].getGrainHere();
         }
         else{
           total += patches[y][x + i].getGrainHere();
         }
       } else if (heading == 90) {
         if ((y-i) <0) {
-          total += patches[WealthDistribution.NUM_PATCH_ROWS - y - i][x].getGrainHere();
+          total += patches[
+            WealthDistribution.NUM_PATCH_ROWS - y - i
+          ][x].getGrainHere();
         }
         else{
           total += patches[y - i][x].getGrainHere();
         }
       } else if (heading == 180) {
         if ((x-i) <0) {
-          total += patches[y][WealthDistribution.NUM_PATCH_COLS - x - i].getGrainHere();
+          total += patches[y][
+            WealthDistribution.NUM_PATCH_COLS - x - i
+          ].getGrainHere();
         }
         else {
           total += patches[y][x - i].getGrainHere();
         }
       } else {
           if((y+i) >= WealthDistribution.NUM_PATCH_ROWS ){
-            total += patches[(y+i)%(WealthDistribution.NUM_PATCH_ROWS)][x].getGrainHere();
+            total += patches[
+              (y + i) % (WealthDistribution.NUM_PATCH_ROWS)
+            ][x].getGrainHere();
           }
           else {
             total += patches[y + i][x].getGrainHere();
