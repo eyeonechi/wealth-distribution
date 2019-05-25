@@ -40,7 +40,10 @@ public class Calculator {
       wealthSumSoFar += sortedWealths[index];
       lorenzPoints.add((wealthSumSoFar / totalWealth) * 100);
       index += 1;
-      giniIndexReserve = giniIndexReserve + (index / sortedWealths.length) - (wealthSumSoFar / totalWealth);
+      giniIndexReserve
+        = giniIndexReserve
+        + (index / sortedWealths.length)
+        - (wealthSumSoFar / totalWealth);
     }
     giniIndex = 1 + (giniIndexReserve / sortedWealths.length) / 0.5;
   }
@@ -51,6 +54,11 @@ public class Calculator {
 
   public Double getGiniIndex() {
     return giniIndex;
+  }
+
+  public void resetAll() {
+    lorenzPoints = new ArrayList<Double>();
+    giniIndex = 0.0;
   }
 
 }
