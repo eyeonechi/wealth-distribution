@@ -9,11 +9,31 @@ A model which simulates the distribution of wealth amongst a population of peopl
 ## Requirements
 Java 8
 
-## Makefile Instructions
-1. cd src/java/
-2. make
+## Instructions
+### Original Model
+make original
+
+### Extension 1 Model (Inheritance)
+make extension1
+
+### Extension 2 Model (Tax)
+make extension2
+
+### Clean
+make clean
 
 ## Manual Instructions
-1. cd src/java/
+### Original Model
+1. cd src/original/
+2. javac *.java
+3. java JNetLogo
+
+### Extension 1 Model (Inheritance)
+1. cd src/extension1/
+2. javac *.java
+3. java JNetLogo
+
+### Extension 2 Model (Tax)
+1. cd src/extension2/
 2. javac *.java
 3. java JNetLogo
