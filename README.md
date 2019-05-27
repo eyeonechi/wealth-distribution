@@ -6,8 +6,8 @@ A model which simulates the distribution of wealth amongst a population of peopl
 2. 736901 Ivan Ken Weng Chee
 3. 866102 Saksham Agrawal
 
-## Requirements
-Java 8
+## Dependencies
+1. Java 8
 
 ## Instructions
 ### Original Model
@@ -21,6 +21,12 @@ make extension2
 
 ### Clean
 make clean
+
+## Description
+1. src/original/   : Original Model
+2. src/extension1/ : Extension 1 Model (Inheritance)
+3. src/extension2/ : Extension 2 Model (Tax)
+4. src/others/ : Updated NetLogo code and LTS state model
 
 ## Manual Instructions
 ### Original Model
