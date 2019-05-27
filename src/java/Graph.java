@@ -1,6 +1,5 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -10,12 +9,19 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
+/**
+ * JNetLogo Graph
+ * Adapted from GraphPanel by Rodrigo Castro (roooodcastro)
+ * https://gist.github.com/roooodcastro/6325153
+ * @author Ivan Ken Weng Chee 736901
+ * @author Shorye Chopra 689913
+ * @author Saksham Agrawal 866102
+ */
 public class Graph extends JPanel {
+
+  private static final long serialVersionUID = 1L;
   private int width = 240;
   private int height = 160;
   private int padding = 25;
@@ -30,12 +36,20 @@ public class Graph extends JPanel {
   private Boolean equalityLine;
   private Boolean giniIndex;
 
+  /**
+   * Graph Constructor
+   * @param equalityLine : Lorenz curve graph
+   * @param giniIndex    : Gini index graph
+   */
   public Graph(Boolean equalityLine, Boolean giniIndex) {
     this.scores = new ArrayList<Double>();
     this.equalityLine = equalityLine;
     this.giniIndex = giniIndex;
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+   */
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
@@ -172,11 +186,18 @@ public class Graph extends JPanel {
     }
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JComponent#getPreferredSize()
+   */
   @Override
   public Dimension getPreferredSize() {
     return new Dimension(width, height);
   }
 
+  /**
+   * Finds the minimum score
+   * @return : Minimum score
+   */
   private double getMinScore() {
     if (giniIndex) return 0;
     double minScore = Double.MAX_VALUE;
@@ -186,6 +207,10 @@ public class Graph extends JPanel {
     return minScore;
   }
 
+  /**
+   * Finds the maximum score
+   * @return : Maximum score
+   */
   private double getMaxScore() {
     if (giniIndex) return 1;
     double maxScore = Double.MIN_VALUE;
@@ -195,18 +220,29 @@ public class Graph extends JPanel {
     return maxScore;
   }
 
+  /**
+   * Scores Setter
+   * @param scores : New scores
+   */
   public void setScores(List<Double> scores) {
     this.scores = scores;
     invalidate();
     this.repaint();
   }
 
+  /**
+   * Adds a new score to scores
+   * @param score : New score
+   */
   public void addScore(Double score) {
     this.scores.add(score);
     invalidate();
     this.repaint();
   }
 
+  /**
+   * Resets scores
+   */
   public void resetScores() {
     this.scores = new ArrayList<Double>();
     invalidate();

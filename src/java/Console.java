@@ -1,23 +1,32 @@
-import java.io.*;
-import java.util.*;
-
-import javax.print.DocFlavor.STRING;
-
+/**
+ * Generates console output
+ * @author Ivan Ken Weng Chee 736901
+ * @author Shorye Chopra 689913
+ * @author Saksham Agrawal 866102
+ */
 public class Console {
 
-  private WealthDistribution model;
-  public Integer red;
-  public Integer green;
-  public Integer blue;
-
+  private Integer red;
+  private Integer green;
+  private Integer blue;
+  
+  /**
+   * Console Constructor
+   * @param model : Model
+   */
   public Console(WealthDistribution model) {
-    this.model = model;
     this.red = 0;
     this.green = 0;
     this.blue = 0;
   }
 
-  // generates a console visualisation of the model
+  /**
+   * Updates the console with model state
+   * @param ticks      : Ticks
+   * @param turtles    : Array of turtles
+   * @param patches    : Array of patch rows
+   * @param calculator : Calculator
+   */
   public void update(
     Integer ticks,
     Turtle[] turtles,
@@ -25,11 +34,14 @@ public class Console {
     Calculator calculator
   ) {
     System.out.println("Tick " + ticks);
-
     debug(turtles, patches);
   }
 
-
+  /**
+   * Console visualisation of model state
+   * @param turtles : Array of turtles
+   * @param patches : Array of patch rows
+   */
   private void debug(Turtle[] turtles, Patch[][] patches) {
     int maxWealth = 0;
     this.red = 0;
@@ -62,6 +74,30 @@ public class Console {
       System.out.print("\n");
     }
     System.out.print("\n");
+  }
+
+  /**
+   * Red Getter
+   * @return : Number of red turtles
+   */
+  public Integer getRed() {
+    return red;
+  }
+
+  /**
+   * Green Getter
+   * @return : Number of green turtles
+   */
+  public Integer getGreen() {
+    return green;
+  }
+
+  /**
+   * Blue Getter
+   * @return : Number of blue turtles
+   */
+  public Integer getBlue() {
+    return blue;
   }
 
 }

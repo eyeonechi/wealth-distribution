@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Updates the numerical calculations of the model
+ * @author Ivan Ken Weng Chee 736901
+ * @author Shorye Chopra 689913
+ * @author Saksham Agrawal 866102
+ */
 public class Calculator {
 
   private Double[] sortedWealths;
@@ -12,6 +18,9 @@ public class Calculator {
   private Double giniIndex;
   private List<Double> lorenzPoints;
 
+  /**
+   * Calculator Constructor
+   */
   public Calculator() {
     totalWealth = 0.0;
     wealthSumSoFar = 0.0;
@@ -20,6 +29,11 @@ public class Calculator {
     giniIndex = 0.0;
   }
 
+  /**
+   * Updates Lorenz and Gini Index values
+   * @param turtles : Array of turtles
+   * @param patches : Array of patch rows
+   */
   public void updateLorenzAndGini(Turtle[] turtles, Patch[][] patches) {
     sortedWealths = new Double[turtles.length];
     for (int i = 0; i < turtles.length; i ++) {
@@ -48,14 +62,25 @@ public class Calculator {
     giniIndex = 1 + (giniIndexReserve / sortedWealths.length) / 0.5;
   }
 
+  /**
+   * Lorenz Points Getter
+   * @return : List of Lorenz Points
+   */
   public List<Double> getLorenzPoints() {
     return lorenzPoints;
   }
 
+  /**
+   * Gini Index Getter
+   * @return : Gini Index
+   */
   public Double getGiniIndex() {
     return giniIndex;
   }
 
+  /**
+   * Reinitialises Lorenz Points and Gini Index
+   */
   public void resetAll() {
     lorenzPoints = new ArrayList<Double>();
     giniIndex = 0.0;
