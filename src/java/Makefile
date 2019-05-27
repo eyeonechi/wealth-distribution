@@ -1,3 +1,7 @@
+# Ivan Ken Weng Chee 736901
+# Shorye Chopra 689913
+# Saksham Agrawal 866102
+
 EXECUTABLE=JNetLogo
 BINARY=*.class
 SOURCE=*.java

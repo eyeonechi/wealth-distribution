@@ -9,7 +9,11 @@ A model which simulates the distribution of wealth amongst a population of peopl
 ## Requirements
 Java 8
 
-## Instructions
-cd src/java
-javac *.java
-java JNetLogo
+## Makefile Instructions
+1. cd src/java/
+2. make
+
+## Manual Instructions
+1. cd src/java/
+2. javac *.java
+3. java JNetLogo
