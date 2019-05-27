@@ -1,6 +1,12 @@
 import java.lang.Math;
 import java.util.Random;
 
+/**
+ * Simulates a Turtle in NetLogo
+ * @author Ivan Ken Weng Chee 736901
+ * @author Shorye Chopra 689913
+ * @author Saksham Agrawal 866102
+ */
 public class Turtle {
 
   public static final Integer MAX_VISION = 5;
@@ -24,12 +30,20 @@ public class Turtle {
   private Integer total;
   private Integer howFar;
 
+  /**
+   * Turtle Constructor
+   * @param x : X coordinate of turtle
+   * @param y : Y coordinate of turtle
+   */
   public Turtle(Integer x, Integer y) {
     this.x = x;
     this.y = y;
     this.heading = 0;
   }
 
+  /**
+   * Initialises initial turtle variables
+   */
   public void setInitialTurtleVars() {
     age = 0;
     // face one-of neighbors4
@@ -41,11 +55,13 @@ public class Turtle {
     vision = 1 + new Random().nextInt(MAX_VISION);
   }
 
-  // set the class of the turtles
-  // if a turtle has less than a third the wealth of the richest turtle,
-  // color it red.
-  // if between one and two thirds, color it green.
-  // if over two thirds, color it blue.
+  /**
+   * Sets the class of the turtles
+   * If less than a third the wealth of the richest turtle, color red.
+   * If between one and two thirds, color it green.
+   * If over two thirds, color it blue.
+   * @param maxWealth : Maximum wealth of all turtles
+   */
   public void recolorTurtles(Integer maxWealth) {
     if (wealth <= maxWealth / 3.0) {
       color = "red";
@@ -56,8 +72,11 @@ public class Turtle {
     }
   }
 
-  // determine the direction which is most profitable for each turtle in
-  // the surrounding patches within the turtles' vision
+  /**
+   * Determine the direction which is most profitable for each turtle in
+   * the surrounding patches within the turtles' vision
+   * @param patches : Array of patch rows
+   */
   public void turnTowardsGrain(Patch[][] patches) {
     heading = 0;
     bestDirection = 0;
@@ -80,29 +99,33 @@ public class Turtle {
     heading = bestDirection;
   }
 
-  // each turtle harvests the grain on its patch. if there are multiple
-  // turtles on a patch, divide the grain evenly among the turtles
+  /**
+   * Each turtle harvests the grain on its patch. if there are multiple
+   * turtles on a patch, divide the grain evenly among the turtles
+   * @param patches : Array of patch rows
+   */
   public void harvest(Patch[][] patches) {
     // have turtles harvest before any turtle sets the patch to 0
     Integer income = (int) Math.round(Math.floor(patches[y][x].getGrainHere() / patches[y][x].getCountTurtlesHere()));
-
+    // deduct income based on tax bracket
     if (income <= 20) {
-      income = income - ((int) Math.round(Math.floor(income*32/100)));
+      income = income - ((int) Math.round(Math.floor(income * 32 / 100)));
+    } else if (income <= 40 & income > 20) {
+      income = income - ((int) Math.round(Math.floor(income * 35 / 100)));
+    } else {
+      income = income - ((int) Math.round(Math.floor(income * 37 / 100)));
     }
-    else if (income <= 40 & income > 20) {
-      income = income - ((int) Math.round(Math.floor(income*35/100)));
-    }
-    else {
-      income = income - ((int) Math.round(Math.floor(income*37/100)));
-    }
-
-    wealth = wealth + income;
+    wealth += income;
     // now that the grain has been harvested, have the turtles make the
     // patches which they are on have no grain
     patches[y][x].setGrainHere(0.0);
     patches[y][x].recolorPatch();
   }
 
+  /**
+   * Turtle lifecycle
+   * @param patches : Array of patch rows
+   */
   public void moveEatAgeDie(Patch[][] patches) {
     fd(patches, 1);
     // consume some grain according to metabolism
@@ -118,6 +141,11 @@ public class Turtle {
     }
   }
 
+  /**
+   * How much grain the turtle sees
+   * @param patches : Array of patch rows
+   * @return        : Amount of grain ahead
+   */
   public Integer grainAhead(Patch[][] patches) {
     total = 0;
     howFar = 1;
@@ -164,7 +192,11 @@ public class Turtle {
     return total;
   }
 
-  // move to
+  /**
+   * Turtle moves to another patch
+   * @param patches : Array of patch rows
+   * @param steps   : How far to move
+   */
   public void fd(Patch[][] patches, Integer steps) {
     if (steps != 0) {
       patches[y][x].decreaseCountTurtlesHere();
@@ -191,22 +223,49 @@ public class Turtle {
     patches[y][x].increaseCountTurtlesHere();
   }
 
+  /**
+   * Sets the turtle's age
+   */
   public void setAge() {
     age = new Random().nextInt(lifeExpectancy);
   }
 
+  /**
+   * Maximum Wealth Getter
+   * @return : Maximum wealth of turtle
+   */
   public Integer getWealth() {
     return wealth;
   }
 
+  /**
+   * Maximum Wealth Setter
+   * @param maxWealth : Maximum wealth of turtle
+   */
+  public void setMaxWealth(Integer maxWealth) {
+    this.maxWealth = maxWealth;
+  }
+
+  /**
+   * X Getter
+   * @return : X
+   */
   public Integer getX() {
     return x;
   }
 
+  /**
+   * Y Getter
+   * @return : Y
+   */
   public Integer getY() {
     return y;
   }
 
+  /**
+   * Turtle Color Getter
+   * @return : Color of turtle
+   */
   public String getColor() {
     return color;
   }

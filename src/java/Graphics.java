@@ -1,14 +1,17 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
+/**
+ * JNetLogo GUI
+ * @author Ivan Ken Weng Chee 736901
+ * @author Shorye Chopra 689913
+ * @author Saksham Agrawal 866102
+ */
 public class Graphics extends JFrame {
 
+  private static final long serialVersionUID = 1L;
   private WealthDistribution model;
-  private JFrame f;
   private JPanel displayPanel;
   private JPanel controlPanel;
   private JPanel graphPanel;
@@ -20,24 +23,28 @@ public class Graphics extends JFrame {
   private ImageIcon turtleGreen;
   private Color[] colorBands;
 
-  JButton setupButton;
-  JButton goButton;
-  JTextArea infoTextArea;
-  JLabel ticksLabel;
-  JLabel numPeopleLabel;
-  JLabel maxVisionLabel;
-  JLabel metabolismMaxLabel;
-  JLabel lifeExpectancyMinLabel;
-  JLabel lifeExpectancyMaxLabel;
-  JLabel percentBestLandLabel;
-  JLabel grainGrowthIntervalLabel;
-  JLabel numGrainGrownLabel;
+  private JButton setupButton;
+  private JButton goButton;
+  private JTextArea infoTextArea;
+  private JLabel ticksLabel;
+  private JLabel numPeopleLabel;
+  private JLabel maxVisionLabel;
+  private JLabel metabolismMaxLabel;
+  private JLabel lifeExpectancyMinLabel;
+  private JLabel lifeExpectancyMaxLabel;
+  private JLabel percentBestLandLabel;
+  private JLabel grainGrowthIntervalLabel;
+  private JLabel numGrainGrownLabel;
 
   private Graph lorenzCurveGraph;
   private Graph giniIndexGraph;
 
+  /**
+   * Graphics Constructor
+   * @param model : Model
+   */
   public Graphics(WealthDistribution model) {
-    this.model = model;
+    this.setModel(model);
 
     // images and colors
     colorBands = getColorBands(WealthDistribution.MAX_GRAIN);
@@ -205,6 +212,13 @@ public class Graphics extends JFrame {
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
   }
 
+  /**
+   * Updates the GUI
+   * @param ticks      : Ticks
+   * @param turtles    : Array of turtles
+   * @param patches    : Array of patch rows
+   * @param calculator : Calculator
+   */
   public void update(
     Integer ticks,
     Turtle[] turtles,
@@ -235,6 +249,11 @@ public class Graphics extends JFrame {
     ticksLabel.setText("Tick: " + ticks);
   }
 
+  /**
+   * Constructs an array of colors for grains
+   * @param bands : Number of bands
+   * @return      : Color bands
+   */
   private Color[] getColorBands(Integer bands) {
     Color color = Color.yellow;
     Color[] colorBands = new Color[bands];
@@ -249,9 +268,28 @@ public class Graphics extends JFrame {
     return colorBands;
   }
 
+  /**
+   * Resets the GUI
+   */
   private void resetAll() {
     lorenzCurveGraph.resetScores();
     giniIndexGraph.resetScores();
+  }
+
+  /**
+   * Model Getter
+   * @return : Model
+   */
+  public WealthDistribution getModel() {
+	return model;
+  }
+
+  /**
+   * Model Setter
+   * @param model : New model
+   */
+  public void setModel(WealthDistribution model) {
+	this.model = model;
   }
 
 }

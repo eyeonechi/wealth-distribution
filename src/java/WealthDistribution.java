@@ -1,6 +1,14 @@
+import java.awt.AWTError;
+import java.awt.HeadlessException;
 import java.io.FileWriter;
 import java.util.Random;
 
+/**
+ * Java implementation of NetLogo Wealth Distribution model
+ * @author Ivan Ken Weng Chee 736901
+ * @author Shorye Chopra 689913
+ * @author Saksham Agrawal 866102
+ */
 public class WealthDistribution {
 
   public static final Integer NUM_PATCH_ROWS = 20;
@@ -19,30 +27,24 @@ public class WealthDistribution {
   private Graphics graphics;
   private Console console;
 
+  /**
+   * Wealth Distribution Constructor
+   */
   public WealthDistribution() {
-    graphics = new Graphics(this);
+	// Attempts to execute GUI
+    try {
+      graphics = new Graphics(this);
+    } catch (HeadlessException e1) {
+      System.err.println("No display detected, please connect one");
+    } catch (AWTError e2) {
+      System.err.println("No display detected, please connect one");
+    }
     console = new Console(this);
   }
 
-  public Patch[][] getPatches() {
-    return patches;
-  }
-
-  public Turtle[] getTurtles() {
-    return turtles;
-  }
-
-  public Calculator getCalculator() {
-    return calculator;
-  }
-
-  public Integer getTicks() {
-    return ticks;
-  }
-
-  private void clearAll() {}
-
-  // setup the initial amounts of grain each patch has
+  /**
+   * Setup the initial amounts of grain each patch has
+   */
   private void setupPatches() {
     patches = new Patch[NUM_PATCH_ROWS][NUM_PATCH_COLS];
     // give some patches the highest amount of grain possible
@@ -192,7 +194,9 @@ public class WealthDistribution {
     }
   }
 
-  // setup the initial values for the turtle variables
+  /**
+   * Setup the initial values for the turtle variables
+   */
   private void setupTurtles() {
     turtles = new Turtle[NUM_PEOPLE];
     // setDefaultShape(turtles, "person")
@@ -203,8 +207,6 @@ public class WealthDistribution {
       );
       // put turtles on patch centers
       turtles[i].fd(patches, 0);
-      // easier to see
-      // turtles[i].setSize(1.5)
       turtles[i].setInitialTurtleVars();
       turtles[i].setAge();
     }
@@ -218,19 +220,24 @@ public class WealthDistribution {
     }
   }
 
+  /**
+   * Resets ticks to 0
+   */
   public void resetTicks() {
     ticks = 0;
   }
 
-  // setup and helpers
+  /**
+   * Setup and helpers
+   */
   public void setup() {
     maxWealth = 0;
-    clearAll();
     // set global variables to appropriate values
     // call other procedures to setup various parts of the world
     setupPatches();
     setupTurtles();
     calculator = new Calculator();
+    // updates numerical values
     calculator.updateLorenzAndGini(turtles, patches);
     resetTicks();
     // graphical output
@@ -239,7 +246,9 @@ public class WealthDistribution {
     console.update(ticks, turtles, patches, calculator);
   }
 
-  // go and helpers
+  /**
+   * Go and helpers
+   */
   public void go() {
     try {
       FileWriter csvWriter = new FileWriter("new.csv");
@@ -274,18 +283,18 @@ public class WealthDistribution {
             }
           }
         }
+        // updates numerical values
         calculator.updateLorenzAndGini(turtles, patches);
         // graphical output
         graphics.update(ticks, turtles, patches, calculator);
         // console output
         console.update(ticks, turtles, patches, calculator);
-
-
-        csvWriter.append(Integer.toString(console.red));
+        // csv output
+        csvWriter.append(Integer.toString(console.getRed()));
         csvWriter.append(",");
-        csvWriter.append(Integer.toString(console.green));
+        csvWriter.append(Integer.toString(console.getGreen()));
         csvWriter.append(",");
-        csvWriter.append(Integer.toString(console.blue));
+        csvWriter.append(Integer.toString(console.getBlue()));
         csvWriter.append(",");
         csvWriter.append(Double.toString(calculator.getGiniIndex()));
         csvWriter.append("\n");
@@ -294,11 +303,48 @@ public class WealthDistribution {
       csvWriter.close();
     }
     catch(Exception e){
+      System.err.println("Failed to write csv output");
     }
   }
 
+  /**
+   * Resets the model
+   */
   public void resetAll() {
     calculator.resetAll();
     resetTicks();
   }
+  
+  /**
+   * Patch Getter
+   * @return : Array of patch rows
+   */
+  public Patch[][] getPatches() {
+    return patches;
+  }
+
+  /**
+   * Turtle Getter
+   * @return : Array of turtles
+   */
+  public Turtle[] getTurtles() {
+    return turtles;
+  }
+
+  /**
+   * Calculator Getter
+   * @return : Calculator
+   */
+  public Calculator getCalculator() {
+    return calculator;
+  }
+
+  /**
+   * Ticks Getter
+   * @return : Ticks
+   */
+  public Integer getTicks() {
+    return ticks;
+  }
+
 }
